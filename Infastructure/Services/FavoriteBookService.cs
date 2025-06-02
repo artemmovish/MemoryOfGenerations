@@ -1,66 +1,55 @@
-﻿using Entity.Models;
+﻿// FavoriteBookService.cs
+using Entity.Models;
 using Infastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infastructure.Services
 {
-    public class FavoriteBookService
+    public static class FavoriteBookService
     {
-        private readonly AppDbContext _context;
+        public static AppDbContext Context { get; set; }
 
-        public FavoriteBookService(AppDbContext context)
+        public static async Task<List<FavoriteBook>> GetUserFavoritesAsync(int userId)
         {
-            _context = context;
-        }
-
-        // Получить все избранные книги пользователя
-        public async Task<List<FavoriteBook>> GetUserFavoritesAsync(int userId)
-        {
-            return await _context.FavoriteBooks
+            return await Context.FavoriteBooks
                 .Where(fb => fb.UserId == userId)
                 .Include(fb => fb.Book)
                 .ToListAsync();
         }
 
-        // Проверить, есть ли книга в избранном
-        public async Task<bool> IsBookFavoriteAsync(int userId, int bookId)
+        public static async Task<bool> IsBookFavoriteAsync(int userId, int bookId)
         {
-            return await _context.FavoriteBooks
+            return await Context.FavoriteBooks
                 .AnyAsync(fb => fb.UserId == userId && fb.BookId == bookId);
         }
 
-        // Добавить книгу в избранное
-        public async Task AddFavoriteAsync(FavoriteBook favorite)
+        public static async Task AddFavoriteAsync(FavoriteBook favorite)
         {
             if (!await IsBookFavoriteAsync(favorite.UserId, favorite.BookId))
             {
-                _context.FavoriteBooks.Add(favorite);
-                await _context.SaveChangesAsync();
+                Context.FavoriteBooks.Add(favorite);
+                await Context.SaveChangesAsync();
             }
         }
 
-        // Удалить книгу из избранного
-        public async Task RemoveFavoriteAsync(int userId, int bookId)
+        public static async Task RemoveFavoriteAsync(int userId, int bookId)
         {
-            var favorite = await _context.FavoriteBooks
+            var favorite = await Context.FavoriteBooks
                 .FirstOrDefaultAsync(fb => fb.UserId == userId && fb.BookId == bookId);
 
             if (favorite != null)
             {
-                _context.FavoriteBooks.Remove(favorite);
-                await _context.SaveChangesAsync();
+                Context.FavoriteBooks.Remove(favorite);
+                await Context.SaveChangesAsync();
             }
         }
 
-        // Получить количество избранных книг пользователя
-        public async Task<int> GetFavoriteCountAsync(int userId)
+        public static async Task<int> GetFavoriteCountAsync(int userId)
         {
-            return await _context.FavoriteBooks
+            return await Context.FavoriteBooks
                 .CountAsync(fb => fb.UserId == userId);
         }
     }

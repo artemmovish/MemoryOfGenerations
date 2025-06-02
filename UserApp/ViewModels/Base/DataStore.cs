@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
-using UserApp.ViewModels.Book;
+using UserApp.ViewModels.BookVM;
 using UserApp.Views.Pages.Book;
 
 namespace UserApp.ViewModels.Base
@@ -31,6 +33,15 @@ namespace UserApp.ViewModels.Base
                     _instance = new DataStore();
                 }
                 return _instance;
+            }
+        }
+
+        public static bool IsInDesignMode
+        {
+            get
+            {
+                // Проверяем, находимся ли мы в дизайнере
+                return DesignerProperties.GetIsInDesignMode(new DependencyObject());
             }
         }
 

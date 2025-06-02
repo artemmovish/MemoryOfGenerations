@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserApp.ViewModels.Book
+namespace UserApp.ViewModels.BookVM
 {
-    public class MainBookViewModel
+    public class BookViewModel
     {
-
     }
 }

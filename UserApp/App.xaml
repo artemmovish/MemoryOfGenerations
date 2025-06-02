@@ -8,7 +8,8 @@
         <FontFamily x:Key="Montserrat">pack://application:,,,/Fonts/#MontserratBlack</FontFamily>
 
         <converters:HalfConverter x:Key="HalfConverter"/>
-
+        <converters:WidthAndHeightToRectConverter x:Key="widthAndHeightToRectConverter"/>
+        
         <SolidColorBrush x:Key="Button.MouseOver.Background" Color="Gray"/>
         <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
         <SolidColorBrush x:Key="Button.Pressed.Background" Color="Black"/>
@@ -46,7 +47,6 @@
             <Setter Property="FontFamily" Value="Montserrat Alternates"/>
             <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
         </Style>
-
 
         <!-- Стиль для закругленной кнопки -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -141,14 +141,63 @@
             <Setter Property="Padding" Value="10 5"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
-        
-        
+
+        <Style x:Key="RoundedBorderStyle" TargetType="Border">
+            <Setter Property="Clip">
+                <Setter.Value>
+                    <RectangleGeometry
+                    RadiusX="{Binding CornerRadius.TopLeft, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                    RadiusY="{Binding RadiusX, RelativeSource={RelativeSource Self}}">
+                        <RectangleGeometry.Rect>
+                            <MultiBinding Converter="{StaticResource widthAndHeightToRectConverter}">
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Border}}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType={x:Type Border}}"/>
+                            </MultiBinding>
+                        </RectangleGeometry.Rect>
+                    </RectangleGeometry>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!--ГиперСылка-->
         <Style TargetType="Hyperlink">
             <Setter Property="FontSize" Value="32"/>
             <Setter Property="TextDecorations" Value="None"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontFamily" Value="Montserrat Alternates"/>
+        </Style>
+
+        
+        <!--Текст блок-->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Montserrat Alternates"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="h1" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="80"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="h2" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="title" BasedOn="{StaticResource h1}">
+            <Setter Property="FontSize" Value="39"/>
+        </Style>
+        
+        <Style TargetType="TextBlock" x:Key="discription" BasedOn="{StaticResource h2}">
+            <Setter Property="FontSize" Value="30"/>
+        </Style>
+        
+        <Style TargetType="TextBox" x:Key="SearchBox">
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="FontFamily" Value="Montserrat Alternates"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </Application.Resources>
 </Application>

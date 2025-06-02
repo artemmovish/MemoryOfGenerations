@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Infastructure.Context;
+using Infastructure.Services;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,6 +24,32 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        var context = new AppDbContext();
+
+        // Инициализация сервисов
+        AuthorService.Context = context;
+        BookService.Context = context;
+        FavoriteBookService.Context = context;
+        MyThoughtService.Context = context;
+        UserService.Context = context;
+
         MainFrame.Navigate(DataStore.Instance.MainBookPage);
+    }
+
+    private void Window_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Escape)
+        {
+            var result = MessageBox.Show(
+                "Закрыть приложение?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown(); // Закрыть приложение
+            }
+        }
     }
 }

@@ -1,71 +1,58 @@
-﻿using Entity.Models;
+﻿// UserService.cs
+using Entity.Models;
 using Infastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infastructure.Services
 {
-    public class UserService
+    public static class UserService
     {
-        private readonly AppDbContext _context;
+        public static AppDbContext Context { get; set; }
 
-        public UserService(AppDbContext context)
+        public static async Task<List<User>> GetAllUsersAsync()
         {
-            _context = context;
+            return await Context.Users.ToListAsync();
         }
 
-        // Получить всех пользователей
-        public async Task<List<User>> GetAllUsersAsync()
+        public static async Task<User?> GetUserByIdAsync(int id)
         {
-            return await _context.Users.ToListAsync();
+            return await Context.Users.FindAsync(id);
         }
 
-        // Получить пользователя по ID
-        public async Task<User?> GetUserByIdAsync(int id)
+        public static async Task<User?> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.FindAsync(id);
-        }
-
-        // Получить пользователя по имени
-        public async Task<User?> GetUserByUsernameAsync(string username)
-        {
-            return await _context.Users
+            return await Context.Users
                 .FirstOrDefaultAsync(u => u.Username == username);
         }
 
-        // Добавить нового пользователя
-        public async Task AddUserAsync(User user)
+        public static async Task AddUserAsync(User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            Context.Users.Add(user);
+            await Context.SaveChangesAsync();
         }
 
-        // Обновить пользователя
-        public async Task UpdateUserAsync(User user)
+        public static async Task UpdateUserAsync(User user)
         {
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            Context.Users.Update(user);
+            await Context.SaveChangesAsync();
         }
 
-        // Удалить пользователя
-        public async Task DeleteUserAsync(int id)
+        public static async Task DeleteUserAsync(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await Context.Users.FindAsync(id);
             if (user != null)
             {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                Context.Users.Remove(user);
+                await Context.SaveChangesAsync();
             }
         }
 
-        // Аутентификация пользователя
-        public async Task<User?> AuthenticateAsync(string username, string password)
+        public static async Task<User?> AuthenticateAsync(string username, string password)
         {
-            return await _context.Users
+            return await Context.Users
                 .FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
         }
     }

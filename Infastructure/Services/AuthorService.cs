@@ -1,84 +1,66 @@
-﻿using Entity.Models;
+﻿// AuthorService.cs
+using Entity.Models;
 using Infastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infastructure.Services
 {
-    public class AuthorService
+    public static class AuthorService
     {
-        private readonly AppDbContext _context;
+        public static AppDbContext Context { get; set; }
 
-        public AuthorService(AppDbContext context)
+        public static async Task<List<Author>> GetAllAuthorsAsync()
         {
-            _context = context;
-        }
-
-        // Получить всех авторов
-        public async Task<List<Author>> GetAllAuthorsAsync()
-        {
-            return await _context.Authors
+            return await Context.Authors
                 .Include(a => a.Books)
                 .ToListAsync();
         }
 
-        // Получить автора по ID
-        public async Task<Author?> GetAuthorByIdAsync(int id)
+        public static async Task<Author?> GetAuthorByIdAsync(int id)
         {
-            return await _context.Authors
+            return await Context.Authors
                 .Include(a => a.Books)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        // Поиск авторов по имени
-        public async Task<List<Author>> SearchAuthorsAsync(string name)
+        public static async Task<List<Author>> SearchAuthorsAsync(string name)
         {
-            return await _context.Authors
+            return await Context.Authors
                 .Where(a => a.Name.Contains(name))
                 .ToListAsync();
         }
 
-        // Добавить нового автора
-        public async Task AddAuthorAsync(Author author)
+        public static async Task AddAuthorAsync(Author author)
         {
-            _context.Authors.Add(author);
-            await _context.SaveChangesAsync();
+            Context.Authors.Add(author);
+            await Context.SaveChangesAsync();
         }
 
-        // Обновить автора
-        public async Task UpdateAuthorAsync(Author author)
+        public static async Task UpdateAuthorAsync(Author author)
         {
-            _context.Authors.Update(author);
-            await _context.SaveChangesAsync();
+            Context.Authors.Update(author);
+            await Context.SaveChangesAsync();
         }
 
-        // Удалить автора и все его книги
-        public async Task DeleteAuthorWithBooksAsync(int id)
+        public static async Task DeleteAuthorWithBooksAsync(int id)
         {
-            var author = await _context.Authors
+            var author = await Context.Authors
                 .Include(a => a.Books)
                 .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (author == null)
-                return;
+            if (author == null) return;
 
-            // Удаляем все книги автора
-            _context.Books.RemoveRange(author.Books);
-
-            // Удаляем самого автора
-            _context.Authors.Remove(author);
-
-            await _context.SaveChangesAsync();
+            Context.Books.RemoveRange(author.Books);
+            Context.Authors.Remove(author);
+            await Context.SaveChangesAsync();
         }
 
-        // Получить книги автора
-        public async Task<List<Book>> GetAuthorBooksAsync(int authorId)
+        public static async Task<List<Book>> GetAuthorBooksAsync(int authorId)
         {
-            return await _context.Books
+            return await Context.Books
                 .Where(b => b.AuthorId == authorId)
                 .ToListAsync();
         }

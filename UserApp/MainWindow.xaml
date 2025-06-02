@@ -8,6 +8,7 @@
         WindowState="Maximized"
         ResizeMode="NoResize"
         WindowStyle="None"
+        KeyDown="Window_KeyDown"
         Title="MainWindow" Height="1080" Width="1920">
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>

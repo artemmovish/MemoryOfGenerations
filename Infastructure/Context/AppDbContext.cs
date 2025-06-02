@@ -1,5 +1,7 @@
 ﻿using Entity.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,15 @@ namespace Infastructure.Context
         public DbSet<FavoriteBook> FavoriteBooks { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Author> Authors { get; set; } // Новая таблица
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                // Правильное подключение для SQLite
+                optionsBuilder.UseSqlite("Data Source=E:\\Project\\Учебный процесс\\КПиЯП\\Cursach\\MemoryOfGenerations\\Memory.db");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

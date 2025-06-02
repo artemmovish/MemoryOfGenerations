@@ -4,13 +4,17 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:UserApp.Views.Pages.Book"
-      xmlns:vm="clr-namespace:UserApp.ViewModels.Book"
+      xmlns:vm="clr-namespace:UserApp.ViewModels.BookVM"
+      xmlns:converter="clr-namespace:UserApp.Convertes"
       mc:Ignorable="d"
       d:DesignWidth="1920"
       Title="MainBookPage">
     <d:Page.DataContext>
         <vm:MainBookViewModel/>
     </d:Page.DataContext>
+    <!--<Page.Resources>
+        <converter:WidthAndHeightToRectConverter x:Key="widthAndHeightToRectConverter"/>
+    </Page.Resources>-->
     <ScrollViewer>
         <Grid Background="White">
             <Grid.RowDefinitions>
@@ -20,7 +24,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
-            
+
             <!--Шапка-->
             <Grid>
                 <Image Source="/Resources/Book/icon.png" Margin="10" HorizontalAlignment="Left"/>
@@ -35,22 +39,196 @@
                             Помощь
                         </Hyperlink>
                     </TextBlock>
-                    <Button Style="{StaticResource RoundButtonStyle}">
-                        <Image Source="/Resources/Book/icon.png" />
-                    </Button> 
+                    <Button Background="Gray" Style="{StaticResource RoundButtonStyle}">
+                        <Image Source="/Resources/Book/icon.png"/>
+                    </Button>
                 </StackPanel>
             </Grid>
-            
+
             <!--выход-->
             <Grid Grid.Row="1">
                 <Image Source="/Resources/Book/background.png"/>
-                <Canvas>
-                    <Image Source="/Resources/Book/book6.png"/>
-                    <Image Source="/Resources/Book/book7.png"/>
-                    <Image Source="/Resources/Book/book8.png"/>
-                    <Image Source="/Resources/Book/book9.png"/>
-                    <Image Source="/Resources/Book/book10.png"/>
+                <Canvas ClipToBounds="True">
+                    <Canvas.Resources>
+                        <Style TargetType="Image">
+                            <Setter Property="Width" Value="446"/>
+                            <Setter Property="Height" Value="665"/>
+                        </Style>
+                    </Canvas.Resources>
+                    <Image Source="/Resources/Book/book6.png" Canvas.Left="774" Canvas.Top="123" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Image Source="/Resources/Book/book7.png" Canvas.Left="1182" Canvas.Top="-80"/>
+                    <Image Source="/Resources/Book/book8.png" Canvas.Left="1545" Canvas.Top="105"/>
+                    <Image Source="/Resources/Book/book9.png" Canvas.Left="1088" Canvas.Top="503"/>
+                    <Image Source="/Resources/Book/book10.png" Canvas.Left="1462" Canvas.Top="744" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                    <TextBlock Text="Литературное наследие" Style="{StaticResource h1}" Width="763"
+                               Canvas.Left="51" Canvas.Top="199"/>
+                    <TextBlock Text="Здесь собраны книги, отражающие опыт, мудрость и вдохновение прошлого,
+чтобы вы могли открыть для себя ценности, которые имеют важное значение и сегодня."
+                               Style="{StaticResource h2}" Width="763"
+                               Canvas.Left="51" Canvas.Top="483"/>
                 </Canvas>
+            </Grid>
+            
+            <!--Поиск-->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="/Resources/Book/search.png"/>
+
+                <Grid Grid.Column="1" Height="90" Margin="30,0,100,0">
+                    <Rectangle RadiusX="30"  RadiusY="30" Fill="#F3F3F3"/>
+                    <TextBox Text="{Binding SearchText}" Style="{StaticResource SearchBox}"
+                             Margin="20"
+                             Background="Transparent" BorderThickness="0"/>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="2">
+                    <StackPanel.Resources>
+                        <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock VerticalAlignment="Center" Margin="20">
+                        <Hyperlink >
+                            Книги
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock VerticalAlignment="Center" Margin="20">
+                        <Hyperlink >
+                            Авторы
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock VerticalAlignment="Center" Margin="20">
+                        <Hyperlink >
+                            Жанры
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+            
+            <!--Содержание-->
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid x:Name="AuthorPanel">
+                    <StackPanel>
+                        <TextBlock Text="Авторы" Margin="30"
+                                   Style="{StaticResource h1}"/>
+                        <ListView ItemsSource="{Binding Authors}" HorizontalAlignment="Center">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <ItemContainerTemplate>
+                                    <Border CornerRadius="30" Margin="20,0,20,0" Style="{StaticResource RoundedBorderStyle}">
+                                        <Button Style="{StaticResource RoundedButtonStyle}"
+                                                CommandParameter="{Binding}" Command="{Binding DataContext.ChooseAnAuthorCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                Background="Transparent" Padding="0">
+                                            <Button.Content>
+                                                <Grid Width="570" Height="470">
+                                                    <Image Width="590" Height="490" Source="/Resources/Book/background.png" Stretch="Fill"/>
+                                                    <Image VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                                                           Source="{Binding PhotoPath}"/>
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </Border>
+                                </ItemContainerTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="AudioBookPanel" Grid.Row="1">
+                    <StackPanel>
+                        <TextBlock Text="Аудиокниги" Margin="30"
+               Style="{StaticResource h1}"/>
+                        <ListView ItemsSource="{Binding Books}" HorizontalAlignment="Center">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <ItemContainerTemplate>
+                                    <Border CornerRadius="30" Margin="20,0,20,0" Style="{StaticResource RoundedBorderStyle}">
+                                        <Button Style="{StaticResource RoundedButtonStyle}"
+                            CommandParameter="{Binding}" Command="{Binding DataContext.ChooseAnBookCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                            Background="Transparent" Padding="0">
+                                            <Button.Content>
+                                                <Grid Width="600" Height="300">
+                                                    <Image Width="610" Height="310" Source="/Resources/Book/background.png" Stretch="Fill"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image Width="166" Height="260" Margin="20"
+                                                               VerticalAlignment="Center" HorizontalAlignment="Left" 
+                                                               Source="{Binding CoverImagePath}"/>
+                                                        <StackPanel Grid.Column="1" Margin="0,30,0,0">
+                                                            <TextBlock Text="{Binding Title}" Style="{StaticResource title}"/>
+                                                            <TextBlock Text="{Binding Author.Name}" Style="{StaticResource discription}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Grid.Column="1" Margin="0,0,0,10"
+                                                                   HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                                   Text="Продолжительность 0.00.00"
+                                                                   FontSize="20"/>
+                                                    </Grid>
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </Border>
+                                </ItemContainerTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="GenrePanel" Grid.Row="2">
+                    <StackPanel>
+                        <TextBlock Text="Жанры" Margin="30" 
+                                   Style="{StaticResource h1}"/>
+                        
+                    </StackPanel>
+                </Grid>
+                <Grid x:Name="BookPanel" Grid.Row="4">
+                    <StackPanel>
+                        <TextBlock Text="Книги" Margin="30"
+Style="{StaticResource h1}"/>
+                        <ListView ItemsSource="{Binding Books}" HorizontalAlignment="Center">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <ItemContainerTemplate>
+                                    <Border CornerRadius="30" Margin="30,0,30,0" Style="{StaticResource RoundedBorderStyle}">
+                                        <Button Style="{StaticResource RoundedButtonStyle}"
+             CommandParameter="{Binding}" Command="{Binding DataContext.ChooseAnBookCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+             Background="Transparent" Padding="0">
+                                            <Button.Content>
+                                                <Image Width="550" Height="850" Source="{Binding CoverImagePath}"/>
+                                            </Button.Content>
+                                        </Button>
+                                    </Border>
+                                </ItemContainerTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </Grid>
     </ScrollViewer>

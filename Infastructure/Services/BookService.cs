@@ -1,73 +1,60 @@
-﻿using Entity.Enums;
+﻿// BookService.cs
+using Entity.Enums;
 using Entity.Models;
 using Infastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infastructure.Services
 {
-    public class BookService
+    public static class BookService
     {
-        private readonly AppDbContext _context;
+        public static AppDbContext Context { get; set; }
 
-        public BookService(AppDbContext context)
+        public static async Task<List<Book>> GetAllBooksAsync()
         {
-            _context = context;
+            return await Context.Books.ToListAsync();
         }
 
-        // Получить все книги
-        public async Task<List<Book>> GetAllBooksAsync()
+        public static async Task<Book?> GetBookByIdAsync(int id)
         {
-            return await _context.Books.ToListAsync();
+            return await Context.Books.FindAsync(id);
         }
 
-        // Получить книгу по ID
-        public async Task<Book?> GetBookByIdAsync(int id)
+        public static async Task AddBookAsync(Book book)
         {
-            return await _context.Books.FindAsync(id);
+            Context.Books.Add(book);
+            await Context.SaveChangesAsync();
         }
 
-        // Добавить новую книгу
-        public async Task AddBookAsync(Book book)
+        public static async Task UpdateBookAsync(Book book)
         {
-            _context.Books.Add(book);
-            await _context.SaveChangesAsync();
+            Context.Books.Update(book);
+            await Context.SaveChangesAsync();
         }
 
-        // Обновить книгу
-        public async Task UpdateBookAsync(Book book)
+        public static async Task DeleteBookAsync(int id)
         {
-            _context.Books.Update(book);
-            await _context.SaveChangesAsync();
-        }
-
-        // Удалить книгу
-        public async Task DeleteBookAsync(int id)
-        {
-            var book = await _context.Books.FindAsync(id);
+            var book = await Context.Books.FindAsync(id);
             if (book != null)
             {
-                _context.Books.Remove(book);
-                await _context.SaveChangesAsync();
+                Context.Books.Remove(book);
+                await Context.SaveChangesAsync();
             }
         }
 
-        // Получить книги по жанру
-        public async Task<List<Book>> GetBooksByGenreAsync(Genre genre)
+        public static async Task<List<Book>> GetBooksByGenreAsync(Genre genre)
         {
-            return await _context.Books
+            return await Context.Books
                 .Where(b => b.Genre == genre)
                 .ToListAsync();
         }
 
-        // Поиск книг по названию или автору
-        public async Task<List<Book>> SearchBooksAsync(string searchTerm)
+        public static async Task<List<Book>> SearchBooksAsync(string searchTerm)
         {
-            return await _context.Books
+            return await Context.Books
                 .Where(b => b.Title.Contains(searchTerm) || b.Author.Name.Contains(searchTerm))
                 .ToListAsync();
         }
