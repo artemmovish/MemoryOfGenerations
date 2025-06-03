@@ -94,7 +94,8 @@ namespace UserApp.ViewModels.BookVM
                 Description = "Роман-эпопея, описывающий русское общество в эпоху войн против Наполеона.",
                 Genre = Genre.Роман,
                 CoverImagePath = defaultBookImage,
-                BookFilePath = "war_and_peace.pdf"
+                BookFilePath = @"E:\Project\Учебный процесс\КПиЯП\Cursach\DataMemory\Маленький принц\Маленький принц.epub",
+                AudioBookPath = @"E:\Project\Учебный процесс\КПиЯП\Cursach\DataMemory\Маленький принц\Маленький принц.mp3"
             };
 
             var book2 = new Book

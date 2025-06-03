@@ -69,7 +69,7 @@
                                Canvas.Left="51" Canvas.Top="483"/>
                 </Canvas>
             </Grid>
-            
+
             <!--Поиск-->
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -109,7 +109,7 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-            
+
             <!--Содержание-->
             <Grid Grid.Row="3">
                 <Grid.RowDefinitions>
@@ -138,8 +138,19 @@
                                             <Button.Content>
                                                 <Grid Width="570" Height="470">
                                                     <Image Width="590" Height="490" Source="/Resources/Book/background.png" Stretch="Fill"/>
-                                                    <Image VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                                                    <Image Width="320" Height="400"
+                                                        VerticalAlignment="Bottom" HorizontalAlignment="Right" 
                                                            Source="{Binding PhotoPath}"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="372*"/>
+                                                            <ColumnDefinition Width="199*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Name}" Style="{StaticResource title}" Margin="15,30,0,0"/>
+                                                            <TextBlock Text="{Binding InterestingFacts}" Style="{StaticResource discription}" Margin="15,30,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
                                                 </Grid>
                                             </Button.Content>
                                         </Button>
@@ -152,8 +163,7 @@
 
                 <Grid x:Name="AudioBookPanel" Grid.Row="1">
                     <StackPanel>
-                        <TextBlock Text="Аудиокниги" Margin="30"
-               Style="{StaticResource h1}"/>
+                        <TextBlock Text="Аудиокниги" Margin="30" Style="{StaticResource h1}"/>
                         <ListView ItemsSource="{Binding Books}" HorizontalAlignment="Center">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -181,10 +191,17 @@
                                                             <TextBlock Text="{Binding Title}" Style="{StaticResource title}"/>
                                                             <TextBlock Text="{Binding Author.Name}" Style="{StaticResource discription}"/>
                                                         </StackPanel>
-                                                        <TextBlock Grid.Column="1" Margin="0,0,0,10"
-                                                                   HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                                                   Text="Продолжительность 0.00.00"
-                                                                   FontSize="20"/>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Grid.Column="1" Margin="0,0,0,10"
+                                                                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                                       Text="Продолжительность "
+                                                                       FontSize="20"/>
+                                                            <TextBlock Grid.Column="1" Margin="0,0,0,10"
+                                                                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                                       Text="{Binding AudioBookPath, Converter={StaticResource audioDurationConverter}}"
+                                                                       FontSize="20"/>
+                                                        </StackPanel>
+                                                       
                                                     </Grid>
                                                 </Grid>
                                             </Button.Content>
@@ -200,7 +217,71 @@
                     <StackPanel>
                         <TextBlock Text="Жанры" Margin="30" 
                                    Style="{StaticResource h1}"/>
-                        
+                        <ListView HorizontalAlignment="Center">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.Items>
+                                <ListViewItem>
+                                    <ListViewItem.Content>
+                                        <Grid Width="400" Height="400" Margin="20,40,20,40">
+                                            <Grid.Effect>
+                                                <DropShadowEffect BlurRadius="40"/>
+                                            </Grid.Effect>
+                                            <Image Source="/Resources/Book/background.png" Stretch="Fill"/>
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Image Source="/Resources/Book/Genre/love.png"/>
+                                                <TextBlock TextAlignment="Center" Text="Романтика" Style="{StaticResource title}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </ListViewItem.Content>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <ListViewItem.Content>
+                                        <Grid Width="400" Height="400" Margin="20,40,20,40">
+                                            <Grid.Effect>
+                                                <DropShadowEffect BlurRadius="40"/>
+                                            </Grid.Effect>
+                                            <Image Source="/Resources/Book/background.png" Stretch="Fill"/>
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Image Source="/Resources/Book/Genre/horror.png"/>
+                                                <TextBlock TextAlignment="Center" Text="Ужасы" Style="{StaticResource title}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </ListViewItem.Content>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <ListViewItem.Content>
+                                        <Grid Width="400" Height="400" Margin="20,40,20,40">
+                                            <Grid.Effect>
+                                                <DropShadowEffect BlurRadius="40"/>
+                                            </Grid.Effect>
+                                            <Image Source="/Resources/Book/background.png" Stretch="Fill"/>
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Image Source="/Resources/Book/Genre/psih.png"/>
+                                                <TextBlock TextAlignment="Center" Text="Психология" Style="{StaticResource title}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </ListViewItem.Content>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <ListViewItem.Content>
+                                        <Grid Width="400" Height="400" Margin="20,40,20,40">
+                                            <Grid.Effect>
+                                                <DropShadowEffect BlurRadius="40"/>
+                                            </Grid.Effect>
+                                            <Image Source="/Resources/Book/background.png" Stretch="Fill"/>
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Image Source="/Resources/Book/Genre/detective.png"/>
+                                                <TextBlock TextAlignment="Center" Text="Детективы" Style="{StaticResource title}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </ListViewItem.Content>
+                                </ListViewItem>
+                            </ListView.Items>
+                        </ListView>
                     </StackPanel>
                 </Grid>
                 <Grid x:Name="BookPanel" Grid.Row="4">
@@ -229,6 +310,12 @@ Style="{StaticResource h1}"/>
                         </ListView>
                     </StackPanel>
                 </Grid>
+            </Grid>
+
+            <!--Концовка-->
+            <Grid Grid.Row="4" Width="1645" VerticalAlignment="Center">
+                <TextBlock FontSize="32" Foreground="#787878"
+                    Text="Все права защищены. Адрес: ООО “Память Поколений”, 210017, г. Витебск, ул. Гагарина, д. 41. Email: talainastia10@gmail.com"/>
             </Grid>
         </Grid>
     </ScrollViewer>
