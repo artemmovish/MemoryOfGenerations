@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Entity.Models.Music;
 namespace Entity.Models
 {
     public class User
@@ -17,5 +17,9 @@ namespace Entity.Models
         // Navigation properties
         public ICollection<MyThought> MyThoughts { get; set; }
         public ICollection<FavoriteBook> FavoriteBooks { get; set; }
+
+        // Navigation properties for music
+        public ICollection<Music.Music> FavoriteMusics { get; set; } = new List<Music.Music>();
+        
     }
 }

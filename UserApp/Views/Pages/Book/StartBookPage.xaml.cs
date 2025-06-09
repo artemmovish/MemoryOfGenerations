@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UserApp.ViewModels.Base;
 
 namespace UserApp.Views.Pages.Book
 {
@@ -23,6 +24,16 @@ namespace UserApp.Views.Pages.Book
         public StartBookPage()
         {
             InitializeComponent();
+        }
+
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(DataStore.Instance.MainBookPage);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(DataStore.Instance.MainBookPage);
         }
     }
 }

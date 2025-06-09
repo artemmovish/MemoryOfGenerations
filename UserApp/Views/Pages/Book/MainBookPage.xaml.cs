@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using UserApp.ViewModels.Base;
+using UserApp.ViewModels.BookVM;
 
 namespace UserApp.Views.Pages.Book
 {
@@ -22,7 +14,15 @@ namespace UserApp.Views.Pages.Book
     {
         public MainBookPage()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            DataContext = new MainBookViewModel();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            AddAuthorBtn.Visibility = DataStore.AdminMode ? Visibility.Visible : Visibility.Collapsed;
+            AddBookBtn.Visibility = DataStore.AdminMode ? Visibility.Visible : Visibility.Collapsed;
+            DataContext = new MainBookViewModel();
         }
     }
 }

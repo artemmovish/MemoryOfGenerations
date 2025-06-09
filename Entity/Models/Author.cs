@@ -9,6 +9,7 @@ namespace Entity.Models
         public string? Biography { get; set; }
         public string? PhotoPath { get; set; }
         public string? InterestingFacts { get; set; }
+        public string LifeDate { get; set; }
         public DateTime? BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
 

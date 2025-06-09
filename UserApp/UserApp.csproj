@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Book\AuthorAddPhoto.png" />
     <None Remove="Resources\Book\book10.png" />
     <None Remove="Resources\Book\book6.png" />
     <None Remove="Resources\Book\book7.png" />
@@ -16,19 +17,31 @@
     <None Remove="Resources\Book\book9.png" />
     <None Remove="Resources\Book\booktest.jpg" />
     <None Remove="Resources\Book\booktest.png" />
+    <None Remove="Resources\Book\Genre\detective.png" />
+    <None Remove="Resources\Book\Genre\horror.png" />
+    <None Remove="Resources\Book\Genre\love.png" />
+    <None Remove="Resources\Book\Genre\psih.png" />
     <None Remove="Resources\Book\icon.png" />
+    <None Remove="Resources\Book\registrB.png" />
+    <None Remove="Resources\Book\registrB2.png" />
     <None Remove="Resources\Book\search.png" />
     <None Remove="Resources\Fonts\ofont.ru_Montserrat.ttf" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Windows\" />
     <Folder Include="Data\" />
+    <Folder Include="Resources\Music\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3296.44" />
     <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="VersOne.Epub" Version="3.3.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Book\AuthorAddPhoto.png" />
     <Resource Include="Resources\Book\background.png" />
     <Resource Include="Resources\Book\book1.png" />
     <Resource Include="Resources\Book\book10.png" />
@@ -50,7 +64,13 @@
     <Resource Include="Resources\Book\book9.png" />
     <Resource Include="Resources\Book\booktest.jpg" />
     <Resource Include="Resources\Book\booktest.png" />
+    <Resource Include="Resources\Book\Genre\detective.png" />
+    <Resource Include="Resources\Book\Genre\horror.png" />
+    <Resource Include="Resources\Book\Genre\love.png" />
+    <Resource Include="Resources\Book\Genre\psih.png" />
     <Resource Include="Resources\Book\icon.png" />
+    <Resource Include="Resources\Book\registrB.png" />
+    <Resource Include="Resources\Book\registrB2.png" />
     <Resource Include="Resources\Book\search.png" />
     <Resource Include="Resources\Fonts\ofont.ru_Montserrat.ttf" />
   </ItemGroup>

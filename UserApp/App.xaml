@@ -10,7 +10,8 @@
         <converters:HalfConverter x:Key="HalfConverter"/>
         <converters:WidthAndHeightToRectConverter x:Key="widthAndHeightToRectConverter"/>
         <converters:AudioDurationConverter x:Key="audioDurationConverter"/>
-
+        <converters:ThirdOfWidthConverter x:Key="thirdOfWidthConverter"/>
+        <converters:ThirdOfWidthMinusMarginConverter x:Key="thirdOfWidthMinusMarginConverter"/>
         <SolidColorBrush x:Key="Button.MouseOver.Background" Color="Gray"/>
         <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
         <SolidColorBrush x:Key="Button.Pressed.Background" Color="Black"/>
@@ -18,6 +19,50 @@
         <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
         <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
         <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <!--<Style TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" CornerRadius="30" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>-->
         <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type ButtonBase}">
             <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
                 <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -43,8 +88,9 @@
         </ControlTemplate>
 
         <!-- Общий стиль для всех кнопок (убирает выделение) -->
-        <Style TargetType="Button" >
+        <Style TargetType="Button">
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Black"/>
             <Setter Property="FontFamily" Value="Montserrat Alternates"/>
             <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
         </Style>
@@ -55,7 +101,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="border" 
-            CornerRadius="10"
+            CornerRadius="30"
             Background="{TemplateBinding Background}" 
             BorderBrush="{TemplateBinding BorderBrush}" 
             BorderThickness="{TemplateBinding BorderThickness}" 
@@ -89,10 +135,11 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="#FFDDDDDD"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Padding" Value="10 5"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+
         </Style>
 
         <!-- Стиль для круглой кнопки (100x100) -->
@@ -140,6 +187,7 @@
             <Setter Property="Background" Value="#FFDDDDDD"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Padding" Value="10 5"/>
+            <Setter Property="IsEnabled" Value="True"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
@@ -168,7 +216,6 @@
             <Setter Property="FontFamily" Value="Montserrat Alternates"/>
         </Style>
 
-        
         <!--Текст блок-->
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Montserrat Alternates"/>
@@ -176,47 +223,6 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
 
-        <SolidColorBrush x:Key="ListBox.Static.Background" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="ListBox.Static.Border" Color="#FFABADB3"/>
-        <SolidColorBrush x:Key="ListBox.Disabled.Background" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="ListBox.Disabled.Border" Color="#FFD9D9D9"/>
-        
-        <Style TargetType="{x:Type ListView}">
-            <Setter Property="Background" Value="{StaticResource ListBox.Static.Background}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource ListBox.Static.Border}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListView}">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="1" SnapsToDevicePixels="true">
-                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
-                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                            </ScrollViewer>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Border}"/>
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsGrouping" Value="true"/>
-                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
-                            </MultiTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style TargetType="TextBlock" x:Key="h1" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="80"/>
@@ -231,15 +237,39 @@
             <Setter Property="FontSize" Value="39"/>
         </Style>
         
+        <Style TargetType="TextBlock" x:Key="btnText" BasedOn="{StaticResource title}">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        
         <Style TargetType="TextBlock" x:Key="discription" BasedOn="{StaticResource h2}">
             <Setter Property="FontSize" Value="30"/>
         </Style>
-        
+
         <Style TargetType="TextBox" x:Key="SearchBox">
             <Setter Property="FontSize" Value="36"/>
             <Setter Property="FontWeight" Value="Regular"/>
             <Setter Property="FontFamily" Value="Montserrat Alternates"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <SolidColorBrush x:Key="ListBox.Static.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ListBox.Static.Border" Color="#FFABADB3"/>
+        <SolidColorBrush x:Key="ListBox.Disabled.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ListBox.Disabled.Border" Color="#FFD9D9D9"/>
+
+        <Style TargetType="ListViewItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Application.Resources>
 </Application>

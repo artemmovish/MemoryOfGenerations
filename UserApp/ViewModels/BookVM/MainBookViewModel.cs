@@ -9,7 +9,8 @@ using System.ComponentModel; // Не забудьте using!
 using System.Windows;
 using UserApp.ViewModels.Base;
 using Entity.Enums;
-using CommunityToolkit.Mvvm.Input; // DependencyObject
+using CommunityToolkit.Mvvm.Input;
+using System.Windows.Navigation; // DependencyObject
 
 namespace UserApp.ViewModels.BookVM
 {
@@ -22,9 +23,11 @@ namespace UserApp.ViewModels.BookVM
 
         [ObservableProperty]
         private string searchText;
-
+        [ObservableProperty]
+        bool isAdmin;
         public MainBookViewModel()
         {
+            IsAdmin = DataStore.AdminMode;
             if (DataStore.IsInDesignMode)
             {
                 LoadTestData();
@@ -149,12 +152,40 @@ namespace UserApp.ViewModels.BookVM
         [RelayCommand]
         void ChooseAnAuthor(Author author)
         {
-            MessageBox.Show(author.Name);
+            var page = DataStore.Instance.AuthorPage;
+
+            page.DataContext = author == null ? new AuthorViewModel() : new AuthorViewModel(author);
+
+            DataStore.NavigationService.Navigate(page);
         }
+
+        [RelayCommand]
+        void AddAnAuthor()
+        {
+            var page = DataStore.Instance.AuthorPage;
+
+            page.DataContext = new AuthorViewModel();
+
+            DataStore.NavigationService.Navigate(page);
+        }
+
         [RelayCommand]
         void ChooseAnBook(Book book)
         {
-            MessageBox.Show(book.Title);
+            var page = DataStore.Instance.BookPage;
+
+            page.DataContext = book == null ? new BookViewModel() : new BookViewModel(book);
+
+            DataStore.NavigationService.Navigate(page);
+        }
+        [RelayCommand]
+        void AddAnBook()
+        {
+            var page = DataStore.Instance.BookPage;
+
+            page.DataContext = new BookViewModel();
+
+            DataStore.NavigationService.Navigate(page);
         }
     }
 }

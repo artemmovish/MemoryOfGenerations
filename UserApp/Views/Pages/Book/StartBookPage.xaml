@@ -28,8 +28,11 @@
                        Style="{StaticResource h2}"
                        Width="715" Canvas.Left="1205" Canvas.Top="447"/>
 
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Читать" Width="372" Height="89" FontSize="36" FontWeight="Bold"
-                    Background="Black" Canvas.Left="1318" Canvas.Top="763">
+            <Button Style="{StaticResource RoundedButtonStyle}" Width="372" Height="89"
+                     Canvas.Left="1318" Canvas.Top="763" Click="Start_Click">
+                <Button.Content>
+                    <TextBlock Text="Чиать" Style="{StaticResource btnText}" Foreground="White"/>
+                </Button.Content>
             </Button>
 
             <Button Style="{StaticResource RoundButtonStyle}" Background="Black" Canvas.Left="10" Canvas.Top="970">
@@ -37,7 +40,7 @@
                     <TextBlock Text="&lt;" Foreground="White" FontSize="36" FontWeight="Bold"/>
                 </Button.Content>
             </Button>
-            <Button Style="{StaticResource RoundButtonStyle}" Background="Black" Canvas.Left="1810" Canvas.Top="970" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Button Style="{StaticResource RoundButtonStyle}" Click="Button_Click" Background="Black" Canvas.Left="1810" Canvas.Top="970" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <TextBlock Text="&gt;" Foreground="White" FontSize="36" FontWeight="Bold"/>
             </Button>
         </Canvas>

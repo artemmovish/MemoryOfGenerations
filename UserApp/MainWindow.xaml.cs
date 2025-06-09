@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UserApp.ViewModels;
 using UserApp.ViewModels.Base;
 using UserApp.Views.Pages.Book;
 
@@ -33,11 +34,39 @@ public partial class MainWindow : Window
         MyThoughtService.Context = context;
         UserService.Context = context;
 
-        MainFrame.Navigate(DataStore.Instance.MainBookPage);
+        MainFrame.Navigate(DataStore.Instance.StartBookPage);
+        DataStore.NavigationService = MainFrame.NavigationService;
+
+        DataContext = DataStore.MainViewModel;
+
+        DataStore.MainViewModel.OpenShapka = OpenShapka;
+        DataStore.MainViewModel.CloseShapka = CloseShapka;
     }
 
+    private void Icon_Click(object sender, RoutedEventArgs e)
+    {
+        MainFrame.NavigationService.GoBack();
+    }
+
+    public void OpenShapka()
+    {
+        Shapka.Visibility = Visibility.Visible;
+    }
+
+    public void CloseShapka()
+    {
+        Shapka.Visibility = Visibility.Collapsed;
+    }
     private void Window_KeyDown(object sender, KeyEventArgs e)
     {
+        if (e.Key == Key.F1)
+        {
+            // Переключаем видимость шапки при нажатии F1
+            Shapka.Visibility = Shapka.Visibility == Visibility.Visible
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+        }
+
         if (e.Key == Key.Escape)
         {
             var result = MessageBox.Show(

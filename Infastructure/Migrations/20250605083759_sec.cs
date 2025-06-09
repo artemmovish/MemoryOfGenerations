@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class sec : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,6 +21,7 @@ namespace Infastructure.Migrations
                     Biography = table.Column<string>(type: "TEXT", nullable: true),
                     PhotoPath = table.Column<string>(type: "TEXT", nullable: true),
                     InterestingFacts = table.Column<string>(type: "TEXT", nullable: true),
+                    LifeDate = table.Column<string>(type: "TEXT", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     DeathDate = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },

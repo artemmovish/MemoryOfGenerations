@@ -6,44 +6,23 @@
       xmlns:local="clr-namespace:UserApp.Views.Pages.Book"
       xmlns:vm="clr-namespace:UserApp.ViewModels.BookVM"
       xmlns:converter="clr-namespace:UserApp.Convertes"
+      Loaded="Page_Loaded"
       mc:Ignorable="d"
       d:DesignWidth="1920"
       Title="MainBookPage">
     <d:Page.DataContext>
         <vm:MainBookViewModel/>
     </d:Page.DataContext>
-    <!--<Page.Resources>
-        <converter:WidthAndHeightToRectConverter x:Key="widthAndHeightToRectConverter"/>
-    </Page.Resources>-->
-    <ScrollViewer>
+
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
         <Grid Background="White">
             <Grid.RowDefinitions>
-                <RowDefinition Height="165"/>
+                <RowDefinition Height="0"/>
                 <RowDefinition Height="1080"/>
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
-
-            <!--Шапка-->
-            <Grid>
-                <Image Source="/Resources/Book/icon.png" Margin="10" HorizontalAlignment="Left"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock VerticalAlignment="Center" Margin="20">
-                         <Hyperlink>
-                             О нас
-                         </Hyperlink>
-                    </TextBlock>
-                    <TextBlock VerticalAlignment="Center" Margin="20">
-                        <Hyperlink>
-                            Помощь
-                        </Hyperlink>
-                    </TextBlock>
-                    <Button Background="Gray" Style="{StaticResource RoundButtonStyle}">
-                        <Image Source="/Resources/Book/icon.png"/>
-                    </Button>
-                </StackPanel>
-            </Grid>
 
             <!--выход-->
             <Grid Grid.Row="1">
@@ -121,8 +100,15 @@
 
                 <Grid x:Name="AuthorPanel">
                     <StackPanel>
-                        <TextBlock Text="Авторы" Margin="30"
-                                   Style="{StaticResource h1}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Авторы" Margin="30" 
+                                       Style="{StaticResource h1}"/>
+                            <Button Background="Black" FontSize="90" Style="{StaticResource RoundButtonStyle}"
+                                    x:Name="AddAuthorBtn" Command="{Binding AddAnAuthorCommand}" Panel.ZIndex="100">
+                                <TextBlock Text="+" FontSize="80" Style="{StaticResource btnText}"/>
+                            </Button>
+                        </StackPanel>
+                        
                         <ListView ItemsSource="{Binding Authors}" HorizontalAlignment="Center">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -165,6 +151,7 @@
                     <StackPanel>
                         <TextBlock Text="Аудиокниги" Margin="30" Style="{StaticResource h1}"/>
                         <ListView ItemsSource="{Binding Books}" HorizontalAlignment="Center">
+                            
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal"/>
@@ -286,9 +273,15 @@
                 </Grid>
                 <Grid x:Name="BookPanel" Grid.Row="4">
                     <StackPanel>
-                        <TextBlock Text="Книги" Margin="30"
-Style="{StaticResource h1}"/>
-                        <ListView ItemsSource="{Binding Books}" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Книги" Margin="30" 
+               Style="{StaticResource h1}"/>
+                            <Button Background="Black" FontSize="90" Style="{StaticResource RoundButtonStyle}"
+                                    x:Name="AddBookBtn" Command="{Binding AddAnBookCommand}">
+                                <TextBlock Text="+" FontSize="80" Style="{StaticResource btnText}"/>
+                            </Button>
+                        </StackPanel>
+                        <ListView ItemsSource="{Binding Books}" Margin="20" HorizontalAlignment="Center">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal"/>
