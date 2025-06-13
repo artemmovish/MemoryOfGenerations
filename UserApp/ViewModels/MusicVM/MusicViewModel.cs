@@ -86,7 +86,7 @@ namespace UserApp.ViewModels.MusicVM
 
                 return;
             }
-
+            IsAdmin = DataStore.AdminMode;
             LoadData();
         }
 

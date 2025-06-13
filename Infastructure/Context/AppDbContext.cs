@@ -1,5 +1,4 @@
 ﻿using Entity.Models;
-using Entity.Models.Music;
 using Entity.Models.MusicEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -26,13 +25,12 @@ namespace Infastructure.Context
         public DbSet<Actor> Actors { get; set; }
         public DbSet<PlayList> PlayLists { get; set; }
         public DbSet<FavoriteMusic> FavoriteMusics { get; set; }
-        public DbSet<MusicActor> MusicActors { get; set; } // Промежуточная сущность для связи многие-ко-многим
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Data Source=E:\\Project\\Учебный процесс\\КПиЯП\\Cursach\\MemoryOfGenerations\\Memory.db");
+                optionsBuilder.UseSqlite("Data Source=E:\\Project\\Учебный процесс\\КПиЯП\\Cursach\\MemoryOfGenerations\\Mem.db");
             }
         }
 
@@ -86,22 +84,7 @@ namespace Infastructure.Context
                     j => j.HasOne<Music>().WithMany().HasForeignKey("MusicId"),
                     j => j.ToTable("MusicPlayList"));
 
-            // Связь Music-Actor (многие-ко-многим через MusicActor)
-            modelBuilder.Entity<MusicActor>()
-                .HasKey(ma => new { ma.MusicId, ma.ActorId });
-
-            modelBuilder.Entity<MusicActor>()
-                .HasOne(ma => ma.Music)
-                .WithMany(m => m.MusicActors)
-                .HasForeignKey(ma => ma.MusicId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<MusicActor>()
-                .HasOne(ma => ma.Actor)
-                .WithMany(a => a.MusicActors)
-                .HasForeignKey(ma => ma.ActorId)
-             .OnDelete(DeleteBehavior.Cascade);
-  // Связи для FavoriteMusic
+            // Связи для FavoriteMusic
             modelBuilder.Entity<FavoriteMusic>()
                 .HasOne(fm => fm.Music)
                 .WithMany(m => m.FavoriteMusics)

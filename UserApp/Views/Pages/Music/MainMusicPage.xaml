@@ -73,6 +73,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <!-- Actors Section -->
                     <Grid x:Name="AuthorPanel" >
@@ -252,6 +253,60 @@
                                     </ListViewItem>
                                     <!-- Other genre items -->
                                 </ListView.Items>
+                            </ListView>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="PlayListPanel" Grid.Row="3">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Плейлисты" Margin="30" 
+                   Style="{StaticResource h1}" Foreground="White"/>
+                                <Button Background="Black" FontSize="90" 
+                    Style="{StaticResource RoundButtonStyle}"
+                    Command="{Binding AddPlayListCommand}" 
+                    x:Name="AddPlayBtn">
+                                    <TextBlock Text="+" FontSize="80" Style="{StaticResource btnText}"/>
+                                </Button>
+                            </StackPanel>
+
+                            <ListView ItemsSource="{Binding PlayLists}" 
+                  HorizontalAlignment="Center"
+                  Background="Transparent">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="30" Margin="20" 
+                            Style="{StaticResource RoundedBorderStyle}">
+                                            <Button Command="{Binding DataContext.ChoosePlayListCommand, 
+                                RelativeSource={RelativeSource AncestorType=ListView}}"
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource RoundedButtonStyle}"
+                                Background="Transparent">
+                                                <Grid Width="570" Height="470">
+                                                    <Image Source="/Resources/Book/background.png" 
+                                       Width="590" Height="490" 
+                                       Stretch="Fill"/>
+                                                    <Image Source="{Binding ImagePath}"
+                                       Width="320" Height="400"
+                                       VerticalAlignment="Bottom" 
+                                       HorizontalAlignment="Right"/>
+                                                    <StackPanel Margin="15,30,0,0">
+                                                        <TextBlock Text="{Binding Name}" 
+                                               Style="{StaticResource title}"/>
+                                                        <TextBlock Text="{Binding Description}" 
+                                               Style="{StaticResource discription}"
+                                               Margin="0,30,0,0"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Button>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
                             </ListView>
                         </StackPanel>
                     </Grid>

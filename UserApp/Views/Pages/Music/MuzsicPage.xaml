@@ -4,11 +4,156 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:UserApp.Views.Pages.Music"
+      xmlns:vm="clr-namespace:UserApp.ViewModels.MusicVM"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="MuzsicPage">
+      d:DesignWidth="1920"
+      Title="MusicPage"
+      Loaded="Page_Loaded"
+      xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf">
 
-    <Grid>
-        
+    <d:Page.DataContext>
+        <vm:MusicViewModel/>
+    </d:Page.DataContext>
+
+    <Grid Background="#292929">
+        <Grid x:Name="UserPanel" Visibility="Visible">
+            <ScrollViewer>
+                <Grid>
+                    <Image Source="{Binding SelectedMusic.ImagePath}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                           Width="426" Height="667" Margin="50,80,0,0"/>
+                    <StackPanel Margin="534,80,0,0">
+                        <TextBlock Text="{Binding SelectedMusic.Name}" Style="{StaticResource h1}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
+                            <TextBlock Text="Исполнитель: " Style="{StaticResource title}" FontSize="48"/>
+                            <TextBlock Text="{Binding SelectedMusic.Actor.Name}" Style="{StaticResource discription}" FontSize="48"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
+                            <TextBlock Text="Жанр: " Style="{StaticResource title}" FontSize="48"/>
+                            <TextBlock Text="{Binding SelectedMusic.Genre}" Style="{StaticResource discription}" FontSize="48"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Width="426" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="58,788,0,0">
+                        <Button Height="90" Style="{StaticResource RoundedButtonStyle}" Command="{Binding PlayMusicCommand}">
+                            <Button.Content>
+                                <TextBlock Text="Слушать" Style="{StaticResource btnText}"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Margin="0,20,0,0" Height="90" Command="{Binding AddFavoriteCommand}" Style="{StaticResource RoundedButtonStyle}">
+                            <Button.Content>
+                                <TextBlock Text="Избранное" Style="{StaticResource btnText}"/>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+
+                    <wv2:WebView2 Name="webView" Margin="30,1050,30,0" Grid.Row="2" Width="1430" Height="1080"
+                                  Source="{Binding SelectedMusic.TextPath}"/>
+                    
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid x:Name="AdminPanel" Visibility="Collapsed">
+            <Border Width="450" Height="450" CornerRadius="450" Style="{StaticResource RoundedBorderStyle}" Margin="50,80,0,0" Padding="0" Background="Transparent"
+                    VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Button Command="{Binding AddImageCommand}" Background="Transparent">
+                    <Grid>
+                        <Image Source="/Resources/Music/AddCover.png" />
+                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" VerticalAlignment="Top" HorizontalAlignment="Left"
+                               Width="450" Height="450" Margin="50,80,0,0"/>
+                    </Grid>
+                </Button>
+            </Border>
+
+            <StackPanel Margin="534,80,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Название:" Style="{StaticResource h1}"/>
+                    <Border Style="{StaticResource RoundedBorderStyle}" CornerRadius="30" Grid.Column="1">
+                        <TextBox Style="{StaticResource SearchBox}" FontSize="80"
+                                 Text="{Binding SelectedMusic.Name}"/>
+                    </Border>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Жанр:" Style="{StaticResource title}"/>
+                    <Border Style="{StaticResource RoundedBorderStyle}" CornerRadius="30" Grid.Column="1">
+                        <TextBox Style="{StaticResource SearchBox}" FontSize="40"
+                 Text="{Binding SelectedMusic.Genre}"/>
+                    </Border>
+                </Grid>
+
+                <ListView ItemsSource="{Binding Actors}" Margin="0,40,0,0" VerticalAlignment="Bottom">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <ItemContainerTemplate>
+                            <Border CornerRadius="30" Margin="20,0,20,0" Style="{StaticResource RoundedBorderStyle}">
+                                <Button Style="{StaticResource RoundedButtonStyle}"
+                                        CommandParameter="{Binding}" Command="{Binding DataContext.AddActorCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                        Background="Transparent" Padding="0">
+                                    <Button.Content>
+                                        <Grid Width="450" Height="350">
+                                            <Image Source="/Resources/Book/background.png" Stretch="Fill"/>
+                                            <Image Width="200" Height="280"
+                                                   VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                                                   Source="{Binding ImagePath}"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="372*"/>
+                                                    <ColumnDefinition Width="199*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource title}" Margin="15,30,0,0"/>
+                                                    <TextBlock Text="{Binding Description}" Style="{StaticResource discription}" Margin="15,30,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </Button.Content>
+                                </Button>
+                            </Border>
+                        </ItemContainerTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
+            <StackPanel Width="426" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="58,560,0,0">
+                <Button Height="60" Style="{StaticResource RoundedButtonStyle}"
+                        Command="{Binding AddMusicFileCommand}">
+                    <Button.Content>
+                        <TextBlock Text="Добавить Аудио" Style="{StaticResource btnText}"/>
+                    </Button.Content>
+                </Button>
+                <Button Height="60" Margin="0,10,0,0" Style="{StaticResource RoundedButtonStyle}"
+                        Command="{Binding AddLyricsFileCommand}">
+                    <Button.Content>
+                        <TextBlock Text="Добавить текст" Style="{StaticResource btnText}"/>
+                    </Button.Content>
+                </Button>
+                <Button Margin="0,10,0,0" Height="60" Style="{StaticResource RoundedButtonStyle}"
+                        Command="{Binding DeleteMusicCommand}">
+                    <Button.Content>
+                        <TextBlock Text="Удалить" Style="{StaticResource btnText}"/>
+                    </Button.Content>
+                </Button>
+                <Button Margin="0,10,0,0" Height="60" Style="{StaticResource RoundedButtonStyle}"
+                        Command="{Binding SaveMusicCommand}">
+                    <Button.Content>
+                        <TextBlock FontSize="25" Text="Сохранить" Style="{StaticResource btnText}"/>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

@@ -111,7 +111,7 @@ namespace Infastructure.Migrations
                     b.ToTable("FavoriteBooks");
                 });
 
-            modelBuilder.Entity("Entity.Models.Music.Actor", b =>
+            modelBuilder.Entity("Entity.Models.MusicEntity.Actor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -134,7 +134,29 @@ namespace Infastructure.Migrations
                     b.ToTable("Actors");
                 });
 
-            modelBuilder.Entity("Entity.Models.Music.Music", b =>
+            modelBuilder.Entity("Entity.Models.MusicEntity.FavoriteMusic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MusicId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MusicId");
+
+                    b.HasIndex("UserId", "MusicId")
+                        .IsUnique();
+
+                    b.ToTable("FavoriteMusics");
+                });
+
+            modelBuilder.Entity("Entity.Models.MusicEntity.Music", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,6 +164,10 @@ namespace Infastructure.Migrations
 
                     b.Property<int>("ActorId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ImagePath")
                         .IsRequired()
@@ -166,22 +192,21 @@ namespace Infastructure.Migrations
                     b.ToTable("Musics");
                 });
 
-            modelBuilder.Entity("Entity.Models.Music.PlayList", b =>
+            modelBuilder.Entity("Entity.Models.MusicEntity.PlayList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PlayLists");
                 });
@@ -251,21 +276,6 @@ namespace Infastructure.Migrations
                     b.ToTable("MusicPlayList", (string)null);
                 });
 
-            modelBuilder.Entity("UserFavoriteMusic", b =>
-                {
-                    b.Property<int>("MusicId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MusicId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserFavoriteMusic", (string)null);
-                });
-
             modelBuilder.Entity("Entity.Models.Book", b =>
                 {
                     b.HasOne("Entity.Models.Author", "Author")
@@ -296,26 +306,34 @@ namespace Infastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Entity.Models.Music.Music", b =>
+            modelBuilder.Entity("Entity.Models.MusicEntity.FavoriteMusic", b =>
                 {
-                    b.HasOne("Entity.Models.Music.Actor", "Actor")
-                        .WithMany("Musics")
-                        .HasForeignKey("ActorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("Entity.Models.MusicEntity.Music", "Music")
+                        .WithMany("FavoriteMusics")
+                        .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Actor");
-                });
-
-            modelBuilder.Entity("Entity.Models.Music.PlayList", b =>
-                {
                     b.HasOne("Entity.Models.User", "User")
-                        .WithMany()
+                        .WithMany("FavoriteMusics")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Music");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entity.Models.MusicEntity.Music", b =>
+                {
+                    b.HasOne("Entity.Models.MusicEntity.Actor", "Actor")
+                        .WithMany("Musics")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
                 });
 
             modelBuilder.Entity("Entity.Models.MyThought", b =>
@@ -339,30 +357,15 @@ namespace Infastructure.Migrations
 
             modelBuilder.Entity("MusicPlayList", b =>
                 {
-                    b.HasOne("Entity.Models.Music.Music", null)
+                    b.HasOne("Entity.Models.MusicEntity.Music", null)
                         .WithMany()
                         .HasForeignKey("MusicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entity.Models.Music.PlayList", null)
+                    b.HasOne("Entity.Models.MusicEntity.PlayList", null)
                         .WithMany()
                         .HasForeignKey("PlayListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UserFavoriteMusic", b =>
-                {
-                    b.HasOne("Entity.Models.Music.Music", null)
-                        .WithMany()
-                        .HasForeignKey("MusicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entity.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -379,14 +382,21 @@ namespace Infastructure.Migrations
                     b.Navigation("MyThoughts");
                 });
 
-            modelBuilder.Entity("Entity.Models.Music.Actor", b =>
+            modelBuilder.Entity("Entity.Models.MusicEntity.Actor", b =>
                 {
                     b.Navigation("Musics");
+                });
+
+            modelBuilder.Entity("Entity.Models.MusicEntity.Music", b =>
+                {
+                    b.Navigation("FavoriteMusics");
                 });
 
             modelBuilder.Entity("Entity.Models.User", b =>
                 {
                     b.Navigation("FavoriteBooks");
+
+                    b.Navigation("FavoriteMusics");
 
                     b.Navigation("MyThoughts");
                 });

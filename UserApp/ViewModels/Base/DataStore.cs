@@ -69,6 +69,7 @@ namespace UserApp.ViewModels.Base
         public MainMusicPage MainMusicPage { get; set; } = new();
         public MusicPage MusicPage { get; set; } = new();
 
+        public PlayListPage PlayListPage { get; set; } = new();
         public ArtistPage ActorPage { get; set; } = new ArtistPage();
         #endregion
     }

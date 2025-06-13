@@ -13,29 +13,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UserApp.ViewModels.Base;
-using UserApp.ViewModels.BookVM;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace UserApp.Views.Pages.Music
 {
     /// <summary>
-    /// Логика взаимодействия для MuzsicPage.xaml
+    /// Логика взаимодействия для PlayListPage.xaml
     /// </summary>
-    public partial class MusicPage : Page
+    public partial class PlayListPage : Page
     {
-        public MusicPage()
+        public PlayListPage()
         {
             InitializeComponent();
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Управление видимостью панелей
             AdminPanel.Visibility = DataStore.AdminMode ? Visibility.Visible : Visibility.Collapsed;
             UserPanel.Visibility = DataStore.AdminMode ? Visibility.Collapsed : Visibility.Visible;
         }
-
-
-
     }
 }
