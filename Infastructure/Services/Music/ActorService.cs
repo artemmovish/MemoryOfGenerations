@@ -1,4 +1,4 @@
-﻿using Entity.Models.Music;
+﻿using Entity.Models.MusicEntity;
 using Infastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System;

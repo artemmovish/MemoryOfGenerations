@@ -8,11 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using UserApp.ViewModels.Base;
+using VersOne.Epub;
 
 namespace UserApp.ViewModels.BookVM
 {
@@ -23,10 +25,24 @@ namespace UserApp.ViewModels.BookVM
         [ObservableProperty]
         string photoPath;
         public ObservableCollection<Author> Authors { get; set; } = new ObservableCollection<Author>();
+        public ObservableCollection<MyThought> MyThoughts { get; set; } = new ObservableCollection<MyThought>();
+
         [ObservableProperty]
         User currentUser;
         [ObservableProperty]
         bool isAdmin;
+
+        // New properties for EPUB viewing
+        [ObservableProperty]
+        private EpubBook _book;
+        [ObservableProperty]
+        private int _currentChapterIndex = 0;
+        [ObservableProperty]
+        private string _tempExtractPath;
+        [ObservableProperty]
+        private string _currentChapterContent;
+        [ObservableProperty]
+        private bool _isEpubLoaded;
         public BookViewModel()
         {
             
@@ -143,6 +159,109 @@ namespace UserApp.ViewModels.BookVM
             SelectedBook = book;
             PhotoPath = book.CoverImagePath;
             LoadData();
+
+            if (!string.IsNullOrEmpty(book.BookFilePath))
+            {
+                LoadEpub(book.BookFilePath);
+            }
+        }
+
+        [RelayCommand]
+        void LoadAudio()
+        {
+            DataStore.AudioService.AddTrack(SelectedBook.AudioBookPath);
+            OnPropertyChanged(nameof(AudioService.TrackList));
+        }
+        private void LoadEpub(string filePath)
+        {
+            try
+            {
+                // Clean up old temp directory
+                if (!string.IsNullOrEmpty(_tempExtractPath) && Directory.Exists(_tempExtractPath))
+                {
+                    Directory.Delete(_tempExtractPath, true);
+                }
+
+                _tempExtractPath = Path.Combine(Path.GetTempPath(), "epub_temp_" + Guid.NewGuid());
+                ZipFile.ExtractToDirectory(filePath, _tempExtractPath);
+
+                _book = EpubReader.ReadBook(filePath);
+                _currentChapterIndex = 0;
+                IsEpubLoaded = true;
+                LoadChapter(_currentChapterIndex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки EPUB: {ex.Message}");
+                IsEpubLoaded = false;
+            }
+        }
+
+        private void LoadChapter(int index)
+        {
+            if (_book == null || _book.ReadingOrder.Count == 0 || index < 0 || index >= _book.ReadingOrder.Count)
+                return;
+
+            var chapter = _book.ReadingOrder[index];
+            string filePath = Path.Combine(_tempExtractPath, chapter.FilePath.Replace('/', Path.DirectorySeparatorChar));
+
+            if (File.Exists(filePath))
+            {
+                CurrentChapterContent = File.ReadAllText(filePath);
+            }
+            else
+            {
+                CurrentChapterContent = "<html><body>Файл главы не найден</body></html>";
+            }
+        }
+
+        [RelayCommand]
+        private void NextChapter()
+        {
+            if (_book != null && _currentChapterIndex + 1 < _book.ReadingOrder.Count)
+            {
+                _currentChapterIndex++;
+                LoadChapter(_currentChapterIndex);
+                LoadThoughts();
+            }
+        }
+
+        [RelayCommand]
+        private async Task PreviousChapter()
+        {
+            if (_book != null && _currentChapterIndex - 1 >= 0)
+            {
+                _currentChapterIndex--;
+                LoadChapter(_currentChapterIndex);
+                LoadThoughts();
+            }
+        }
+
+        public void LoadThoughts()
+        {
+            var list = new ObservableCollection<MyThought>(DataStore.Instance.User.MyThoughts
+                    .Where(t => t.Chapter == CurrentChapterIndex && t.BookId == this.SelectedBook.Id));
+
+            MyThoughts.Clear();
+            foreach (var item in list)
+            {
+                MyThoughts.Add(item);
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!string.IsNullOrEmpty(_tempExtractPath) && Directory.Exists(_tempExtractPath))
+            {
+                try { Directory.Delete(_tempExtractPath, true); }
+                catch { /* Ignore cleanup errors */ }
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public async Task LoadData()
@@ -150,9 +269,44 @@ namespace UserApp.ViewModels.BookVM
             Authors = new ObservableCollection<Author>(await AuthorService.GetAllAuthorsAsync());
         }
 
+        
         private void LoadUser()
         {
             CurrentUser = DataStore.Instance.User;
+        }
+
+        public async Task AddMyThought(string str)
+        {
+            MyThought myThought = new()
+            {
+                UserId = DataStore.Instance.User.Id,
+                BookId = SelectedBook.Id,
+                Chapter = CurrentChapterIndex,
+                Text = str,
+            };
+
+            await MyThoughtService.AddThoughtAsync(myThought);
+            DataStore.Instance.User.MyThoughts.Add(myThought);
+            MyThoughts.Add(myThought);
+        }
+
+        [RelayCommand]
+        public async void AddFavorite()
+        {
+            var user = DataStore.Instance.User;
+            if (!await FavoriteBookService.IsBookFavoriteAsync(user.Id, SelectedBook.Id))
+            {
+                FavoriteBook book = new()
+                {
+                    UserId = user.Id,
+                    BookId = SelectedBook.Id
+                };
+                await FavoriteBookService.AddFavoriteAsync(book);
+            }
+            else
+            {
+                await FavoriteBookService.RemoveFavoriteAsync(user.Id, SelectedBook.Id);
+            }
         }
 
         [RelayCommand]
@@ -226,6 +380,35 @@ namespace UserApp.ViewModels.BookVM
                 else
                 {
                     MessageBox.Show("Выберите файл аудио (MP3, WAV, OGG, FLAC).", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        [RelayCommand]
+        public void AddBook()
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = "Выберите файл книги",
+                Filter = "EPUB файлы (*.epub)|*.epub|Все файлы (*.*)|*.*",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string selectedFilePath = openFileDialog.FileName;
+
+                // Проверяем расширение файла
+                string extension = Path.GetExtension(selectedFilePath).ToLower();
+                if (extension == ".epub")
+                {
+                    SelectedBook.BookFilePath = selectedFilePath;
+                    DataStore.MainViewModel.Message = "Файл книги загружен";
+                }
+                else
+                {
+                    MessageBox.Show("Выберите файл в формате EPUB.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }

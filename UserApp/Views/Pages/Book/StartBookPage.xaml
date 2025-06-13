@@ -31,11 +31,11 @@
             <Button Style="{StaticResource RoundedButtonStyle}" Width="372" Height="89"
                      Canvas.Left="1318" Canvas.Top="763" Click="Start_Click">
                 <Button.Content>
-                    <TextBlock Text="Чиать" Style="{StaticResource btnText}" Foreground="White"/>
+                    <TextBlock Text="Читать" Style="{StaticResource btnText}" Foreground="White"/>
                 </Button.Content>
             </Button>
 
-            <Button Style="{StaticResource RoundButtonStyle}" Background="Black" Canvas.Left="10" Canvas.Top="970">
+            <Button Style="{StaticResource RoundButtonStyle}" Click="Button_Click" Background="Black" Canvas.Left="10" Canvas.Top="970">
                 <Button.Content>
                     <TextBlock Text="&lt;" Foreground="White" FontSize="36" FontWeight="Bold"/>
                 </Button.Content>

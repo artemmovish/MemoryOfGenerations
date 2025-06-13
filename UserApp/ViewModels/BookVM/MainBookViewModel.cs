@@ -19,6 +19,9 @@ namespace UserApp.ViewModels.BookVM
     public partial class MainBookViewModel : ObservableObject
     {
         public ObservableCollection<Book> Books { get; set; }
+
+        public ObservableCollection<Book> SortBooks { get; set; }
+
         public ObservableCollection<Author> Authors { get; set; }
 
         [ObservableProperty]
@@ -39,7 +42,42 @@ namespace UserApp.ViewModels.BookVM
         private async void LoadData()
         {
             Books = new ObservableCollection<Book>(await BookService.GetAllBooksAsync());
+            SortBooks = new ObservableCollection<Book>(Books);
+
             Authors = new ObservableCollection<Author>(await AuthorService.GetAllAuthorsAsync());
+
+            PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(SearchText))
+                {
+                    FilterAndSortBooks();
+                }
+            };
+        }
+
+        public void FilterAndSortBooks()
+        {
+            if (Books == null || !Books.Any())
+                return;
+
+            // Фильтрация по SearchText (если не пусто)
+            var filtered = string.IsNullOrWhiteSpace(SearchText)
+                ? Books.ToList() // Если строка поиска пуста, берем все книги
+                : Books.Where(book =>
+                    book.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            // Сортировка по названию (Title)
+            var sortedBooks = filtered.OrderBy(book => book.Title).ToList();
+
+            // Обновляем FilteredBooks
+            SortBooks.Clear();
+            foreach (var book in sortedBooks)
+            {
+                SortBooks.Add(book);
+            }
+
+            // Уведомляем UI об изменении коллекции
+            OnPropertyChanged(nameof(SortBooks));
         }
 
         private void LoadTestData()

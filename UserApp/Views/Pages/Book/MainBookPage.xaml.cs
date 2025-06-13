@@ -24,5 +24,44 @@ namespace UserApp.Views.Pages.Book
             AddBookBtn.Visibility = DataStore.AdminMode ? Visibility.Visible : Visibility.Collapsed;
             DataContext = new MainBookViewModel();
         }
+
+        private void OpenBooks_Click(object sender, RoutedEventArgs e)
+        {
+            BookPanel.Visibility = Visibility.Visible;
+            AudioBookPanel.Visibility = Visibility.Visible;
+            AuthorPanel.Visibility = Visibility.Collapsed;
+            GenrePanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void OpenAuthors_Click(object sender, RoutedEventArgs e)
+        {
+            BookPanel.Visibility = Visibility.Collapsed;
+            AudioBookPanel.Visibility = Visibility.Collapsed;
+            AuthorPanel.Visibility = Visibility.Visible;
+            GenrePanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void OpenGenres_Click(object sender, RoutedEventArgs e)
+        {
+            BookPanel.Visibility = Visibility.Collapsed;
+            AudioBookPanel.Visibility = Visibility.Collapsed;
+            AuthorPanel.Visibility = Visibility.Collapsed;
+            GenrePanel.Visibility = Visibility.Visible;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BookPanel.Visibility = Visibility.Visible;
+            AudioBookPanel.Visibility = Visibility.Visible;
+            AuthorPanel.Visibility = Visibility.Visible;
+            GenrePanel.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
+        }
     }
 }
+
+// BookPanel AudioBookPanel

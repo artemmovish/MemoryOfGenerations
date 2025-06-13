@@ -1,0 +1,63 @@
+﻿<Page x:Class="UserApp.Views.Pages.Book.UpdateProfilePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UserApp.Views.Pages.Book"
+      mc:Ignorable="d" 
+      d:DesignWidth="1920"
+      Title="UpdateProfilePage">
+
+    <Grid Background="White">
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="30"/>
+            </Style>
+        </Grid.Resources>
+        
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Width="300" Source="{Binding User.AvatarPath}"/>
+            <TextBlock>
+                <Hyperlink Command="{Binding UpdateImageCommand}">
+                    Изменить фото профиля
+                </Hyperlink>
+            </TextBlock>
+
+            <StackPanel>
+                <Border x:Name="InputUsername" Background="#F2F2F2" CornerRadius="40" Width="700">
+                    <TextBox Background="Transparent" TextAlignment="Center"
+                             Text="{Binding User.Username}" FontSize="80" Style="{StaticResource SearchBox}"/>
+                </Border>
+            </StackPanel>
+      
+            <TextBlock>
+                <Hyperlink Command="{Binding UpdateUsernameCommand}">
+                    Изменить имя пользователя
+                </Hyperlink>
+            </TextBlock>
+
+            <TextBlock>
+    <Hyperlink Command="{Binding UpdatePasswordCommand}">
+        Изменить пароль
+    </Hyperlink>
+            </TextBlock>
+
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                <Border x:Name="InputPassword" Background="#F2F2F2" CornerRadius="40" Width="700">
+                    <TextBox Background="Transparent" Text="{Binding Password}" FontSize="80" Style="{StaticResource SearchBox}"/>
+                </Border>
+                <Border x:Name="InputNewPassword" Background="#F2F2F2" CornerRadius="40" Width="700"
+                        Margin="300,0,0,0">
+                    <TextBox Background="Transparent" Text="{Binding NewPassword}" FontSize="80" Style="{StaticResource SearchBox}"/>
+                </Border>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Center">
+                <TextBlock Text="Введите старый пароль" Style="{StaticResource discription}" Margin="0,0,300,0"/>
+                <TextBlock Text="Введите новый пароль" Style="{StaticResource discription}" Margin="300,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+          
+    </Grid>
+</Page>

@@ -1,5 +1,5 @@
 ﻿// PlayList.cs
-namespace Entity.Models.Music
+namespace Entity.Models.MusicEntity
 {
     public class PlayList
     {

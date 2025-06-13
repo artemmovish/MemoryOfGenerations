@@ -13,160 +13,313 @@
         Title="MainWindow" Height="1080" Width="1920"
         xmlns:converter="clr-namespace:UserApp.Convertes">
     <Grid>
-        <Grid x:Name="Shapka" Height="120" VerticalAlignment="Top" Panel.ZIndex="1" Background="White">
-            <Button Margin="10" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Click="Icon_Click">
-                <Button.Content>
-                    <Image Source="/Resources/Book/icon.png" />
-                </Button.Content>
-            </Button>
-
-            <TextBlock Text="{Binding Message}" Style="{StaticResource title}" MaxWidth="860" TextWrapping="Wrap"
-                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-            <Grid HorizontalAlignment="Left" Margin="120,0,0,0" VerticalAlignment="Center" MaxWidth="1090">
-                <Grid.DataContext>
-                    <vm:AudioPlayerViewModel/>
-                </Grid.DataContext>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Общие ресурсы -->
-                <Grid.Resources>
-                    <!-- Стиль для кнопок -->
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="BorderBrush" Value="#FF3A3A3A"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="Foreground" Value="#FF3A3A3A"/>
-                        <Setter Property="FontSize" Value="20"/>
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="Padding" Value="10,5"/>
-                        <Setter Property="Cursor" Value="Hand"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="border" 
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="border" Property="Background" Value="#F0F0F0"/>
-                                            <Setter TargetName="border" Property="BorderBrush" Value="#FF5E5E5E"/>
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter TargetName="border" Property="Background" Value="#E0E0E0"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-
-                    <Style TargetType="Slider">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Slider">
-                                    <Grid Margin="5">
-                                        <Track x:Name="PART_Track"
-                               VerticalAlignment="Center">
-                                            <!-- Фоновая линия -->
-                                            <Track.DecreaseRepeatButton>
-                                                <RepeatButton Command="Slider.DecreaseLarge"
-                                              Style="{x:Null}"
-                                              IsTabStop="False"
-                                              Background="#444"
-                                              Height="6"
-                                              Margin="0"
-                                              VerticalAlignment="Center"/>
-                                            </Track.DecreaseRepeatButton>
-
-                                            <!-- Активная линия -->
-                                            <Track.IncreaseRepeatButton>
-                                                <RepeatButton Command="Slider.IncreaseLarge"
-                                              Style="{x:Null}"
-                                              IsTabStop="False"
-                                              Background="#1DB954"
-                                              Height="6"
-                                              Margin="0"
-                                              VerticalAlignment="Center"/>
-                                            </Track.IncreaseRepeatButton>
-
-                                            <!-- Ползунок -->
-                                            <Track.Thumb>
-                                                <Thumb Width="16" Height="16"
-                                       Background="#1DB954"
-                                       BorderBrush="White"
-                                       BorderThickness="2"/>
-                                            </Track.Thumb>
-                                        </Track>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-
-
-                </Grid.Resources>
-
-                <!-- Кнопка предыдущего трека -->
-                <Button Grid.Column="0" 
-             Content="⏮" 
-             ToolTip="Предыдущий трек"
-             Command="{Binding PreviousTrackCommand}"/>
-
-                <!-- Кнопка пауза/плей -->
-                <Button Grid.Column="1" 
-             Content="{Binding PlayPauseButtonContent}" 
-             ToolTip="Воспроизвести/Пауза"
-             Command="{Binding PlayPauseCommand}"/>
-
-                <!-- Кнопка следующего трека -->
-                <Button Grid.Column="2" 
-             Content="⏭" 
-             ToolTip="Следующий трек"
-             Command="{Binding NextTrackCommand}"/>
-
-                <!-- Кнопка удаления текущего трека -->
-                <Button Grid.Column="3" 
-             Content="🗑️" 
-             ToolTip="Удалить текущий трек"
-             Command="{Binding RemoveCurrentTrackCommand}"/>
-
-                <!-- Ползунок перемотки -->
-                <Slider Grid.Column="4" VerticalAlignment="Center"
-             Minimum="0"
-             Maximum="{Binding TrackDuration}" 
-        Value="{Binding CurrentPosition, Mode=TwoWay}"/>
-            </Grid>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock VerticalAlignment="Center" Margin="20">
-             <Hyperlink>
-                 О нас
-             </Hyperlink>
-                </TextBlock>
-                <TextBlock VerticalAlignment="Center" Margin="20">
-            <Hyperlink>
-                Помощь
-            </Hyperlink>
-                </TextBlock>
-                <Button Background="Gray" Style="{StaticResource RoundButtonStyle}">
-                    <Image Source="/Resources/Book/icon.png"/>
+        <StackPanel Panel.ZIndex="1">
+            <Grid x:Name="Shapka" Height="120" VerticalAlignment="Top" Panel.ZIndex="1" Background="White">
+                <Button Margin="10" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Click="Icon_Click">
+                    <Button.Content>
+                        <Image Source="/Resources/Book/icon.png" />
+                    </Button.Content>
                 </Button>
-            </StackPanel>
-        </Grid>
+
+                <TextBlock Text="{Binding Message}" Style="{StaticResource title}" MaxWidth="860" TextWrapping="Wrap"
+               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <Grid HorizontalAlignment="Left" Margin="120,0,0,0" VerticalAlignment="Center" MaxWidth="1090">
+                    <Grid.DataContext>
+                        <vm:AudioPlayerViewModel/>
+                    </Grid.DataContext>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Общие ресурсы -->
+                    <Grid.Resources>
+                        <!-- Стиль для кнопок -->
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="#FF3A3A3A"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Foreground" Value="#FF3A3A3A"/>
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Padding" Value="10,5"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="border" 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#F0F0F0"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5E5E5E"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#E0E0E0"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                        <Style TargetType="Slider">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Slider">
+                                        <Grid Margin="5">
+                                            <Track x:Name="PART_Track"
+                       VerticalAlignment="Center">
+                                                <!-- Фоновая линия -->
+                                                <Track.DecreaseRepeatButton>
+                                                    <RepeatButton Command="Slider.DecreaseLarge"
+                                      Style="{x:Null}"
+                                      IsTabStop="False"
+                                      Background="#444"
+                                      Height="6"
+                                      Margin="0"
+                                      VerticalAlignment="Center"/>
+                                                </Track.DecreaseRepeatButton>
+
+                                                <!-- Активная линия -->
+                                                <Track.IncreaseRepeatButton>
+                                                    <RepeatButton Command="Slider.IncreaseLarge"
+                                      Style="{x:Null}"
+                                      IsTabStop="False"
+                                      Background="#1DB954"
+                                      Height="6"
+                                      Margin="0"
+                                      VerticalAlignment="Center"/>
+                                                </Track.IncreaseRepeatButton>
+
+                                                <!-- Ползунок -->
+                                                <Track.Thumb>
+                                                    <Thumb Width="16" Height="16"
+                               Background="#1DB954"
+                               BorderBrush="White"
+                               BorderThickness="2"/>
+                                                </Track.Thumb>
+                                            </Track>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+
+                    </Grid.Resources>
+
+                    <!-- Кнопка предыдущего трека -->
+                    <Button Grid.Column="0" 
+     Content="⏮" 
+     ToolTip="Предыдущий трек"
+     Command="{Binding PreviousTrackCommand}"/>
+
+                    <!-- Кнопка пауза/плей -->
+                    <Button Grid.Column="1" 
+     Content="{Binding PlayPauseButtonContent}" 
+     ToolTip="Воспроизвести/Пауза"
+     Command="{Binding PlayPauseCommand}"/>
+
+                    <!-- Кнопка следующего трека -->
+                    <Button Grid.Column="2" 
+     Content="⏭" 
+     ToolTip="Следующий трек"
+     Command="{Binding NextTrackCommand}"/>
+
+                    <!-- Кнопка удаления текущего трека -->
+                    <Button Grid.Column="3" 
+     Content="🗑️" 
+     ToolTip="Удалить текущий трек"
+     Command="{Binding RemoveCurrentTrackCommand}"/>
+
+                    <!-- Ползунок перемотки -->
+                    <Slider Grid.Column="4" VerticalAlignment="Center"
+     Minimum="0"
+     Maximum="{Binding TrackDuration}" 
+Value="{Binding CurrentPosition, Mode=TwoWay}"/>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock VerticalAlignment="Center" Margin="20">
+     <Hyperlink Click="About_Click">
+         О нас
+     </Hyperlink>
+                    </TextBlock>
+                    <TextBlock VerticalAlignment="Center" Margin="20">
+    <Hyperlink Click="Help_Click">
+        Помощь
+    </Hyperlink>
+                    </TextBlock>
+                    <Button Background="Transparent" Width="80" Height="80" Style="{StaticResource RoundButtonStyle}" Click="Profile_Click">
+                        <Image Source="{Binding AvatarPath}" Stretch="Fill"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid x:Name="Shapka2" Height="120" VerticalAlignment="Top" Panel.ZIndex="1" Background="#343434">
+                <Button Margin="10" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Click="Icon_Click">
+                    <Button.Content>
+                        <Image Source="/Resources/Music/iconimage.png" />
+                    </Button.Content>
+                </Button>
+
+                <TextBlock Text="{Binding Message}" Foreground="White" Style="{StaticResource title}" MaxWidth="860" TextWrapping="Wrap"
+               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <Grid HorizontalAlignment="Left" Margin="120,0,0,0" VerticalAlignment="Center" MaxWidth="1090">
+                    <Grid.DataContext>
+                        <vm:AudioPlayerViewModel/>
+                    </Grid.DataContext>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Общие ресурсы -->
+                    <Grid.Resources>
+                        <!-- Стиль для кнопок -->
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="#FF3A3A3A"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Foreground" Value="#FF3A3A3A"/>
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Padding" Value="10,5"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="border" 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#F0F0F0"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5E5E5E"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#E0E0E0"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                        <Style TargetType="Slider">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Slider">
+                                        <Grid Margin="5">
+                                            <Track x:Name="PART_Track"
+                       VerticalAlignment="Center">
+                                                <!-- Фоновая линия -->
+                                                <Track.DecreaseRepeatButton>
+                                                    <RepeatButton Command="Slider.DecreaseLarge"
+                                      Style="{x:Null}"
+                                      IsTabStop="False"
+                                      Background="#444"
+                                      Height="6"
+                                      Margin="0"
+                                      VerticalAlignment="Center"/>
+                                                </Track.DecreaseRepeatButton>
+
+                                                <!-- Активная линия -->
+                                                <Track.IncreaseRepeatButton>
+                                                    <RepeatButton Command="Slider.IncreaseLarge"
+                                      Style="{x:Null}"
+                                      IsTabStop="False"
+                                      Background="#1DB954"
+                                      Height="6"
+                                      Margin="0"
+                                      VerticalAlignment="Center"/>
+                                                </Track.IncreaseRepeatButton>
+
+                                                <!-- Ползунок -->
+                                                <Track.Thumb>
+                                                    <Thumb Width="16" Height="16"
+                               Background="#1DB954"
+                               BorderBrush="White"
+                               BorderThickness="2"/>
+                                                </Track.Thumb>
+                                            </Track>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+
+                    </Grid.Resources>
+
+                    <!-- Кнопка предыдущего трека -->
+                    <Button Grid.Column="0" 
+     Content="⏮" 
+     ToolTip="Предыдущий трек"
+     Command="{Binding PreviousTrackCommand}"/>
+
+                    <!-- Кнопка пауза/плей -->
+                    <Button Grid.Column="1" 
+     Content="{Binding PlayPauseButtonContent}" 
+     ToolTip="Воспроизвести/Пауза"
+     Command="{Binding PlayPauseCommand}"/>
+
+                    <!-- Кнопка следующего трека -->
+                    <Button Grid.Column="2" 
+     Content="⏭" 
+     ToolTip="Следующий трек"
+     Command="{Binding NextTrackCommand}"/>
+
+                    <!-- Кнопка удаления текущего трека -->
+                    <Button Grid.Column="3" 
+     Content="🗑️" 
+     ToolTip="Удалить текущий трек"
+     Command="{Binding RemoveCurrentTrackCommand}"/>
+
+                    <!-- Ползунок перемотки -->
+                    <Slider Grid.Column="4" VerticalAlignment="Center"
+     Minimum="0"
+     Maximum="{Binding TrackDuration}" 
+Value="{Binding CurrentPosition, Mode=TwoWay}"/>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock VerticalAlignment="Center" Margin="20" >
+     <Hyperlink Click="About_Click" Foreground="White">
+         О нас
+     </Hyperlink>
+                    </TextBlock>
+                    <TextBlock VerticalAlignment="Center" Margin="20">
+    <Hyperlink Click="Help_Click" Foreground="White">
+        Помощь
+    </Hyperlink>
+                    </TextBlock>
+                    <Button Background="Transparent" Width="80" Height="80" Style="{StaticResource RoundButtonStyle}" Click="Profile_Click">
+                        <Image Source="{Binding AvatarPath}" Stretch="Fill"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
 
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"
                Grid.Row="1"/>
-            
     </Grid>
 </Window>

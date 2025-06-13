@@ -10,7 +10,7 @@
 
     <Grid Background="White">
         <!--Авторизация-->
-        <Grid x:Name="RegistrationPanel" Visibility="Visible" >
+        <Grid x:Name="RegistrationPanel" Visibility="Collapsed" >
             <Image Source="/Resources/Music/backAuth.png"/>
             <Canvas>
                 <TextBox x:Name="Username" Canvas.Left="439" Canvas.Top="398" Height="66" Width="1013" 
@@ -20,7 +20,7 @@
  VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" FontSize="40"
  HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                <Button Style="{StaticResource RoundedButtonStyle}"
+                <Button Style="{StaticResource RoundedButtonStyle}" Background="Transparent"
             Width="670" Height="100" Canvas.Left="625" Canvas.Top="707" Click="AuthBtn_Click">
                     <TextBlock Text="Войти" Style="{StaticResource btnText}"/>
                 </Button>
@@ -36,7 +36,7 @@
         </Grid>
 
         <!--Регистрация-->
-        <Grid x:Name="RegistrationPanel2" Visibility="Collapsed">
+        <Grid x:Name="RegistrationPanel2" Visibility="Visible">
             <Image Source="/Resources/Music/backReg.png"/>
             <Canvas>
                 <Canvas>
@@ -47,7 +47,7 @@
 VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" FontSize="40"
 HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-                    <Button Style="{StaticResource RoundedButtonStyle}"
+                    <Button Style="{StaticResource RoundedButtonStyle}" Background="Transparent"
            Width="670" Height="100" Canvas.Left="625" Canvas.Top="707"
                             Click="RegBtn_Click">
                         <TextBlock Text="Зарегистрироваться" Style="{StaticResource btnText}" Foreground="White"/>

@@ -47,6 +47,9 @@
                                Style="{StaticResource h2}" Width="763"
                                Canvas.Left="51" Canvas.Top="483"/>
                 </Canvas>
+                <Button Style="{StaticResource RoundedButtonStyle}" Click="Button_Click" Margin="160,829,1388,162">
+                    <TextBlock Text="Вернуться" Style="{StaticResource btnText}" Foreground="White"/>
+                </Button>
             </Grid>
 
             <!--Поиск-->
@@ -62,7 +65,7 @@
                     <Rectangle RadiusX="30"  RadiusY="30" Fill="#F3F3F3"/>
                     <TextBox Text="{Binding SearchText}" Style="{StaticResource SearchBox}"
                              Margin="20"
-                             Background="Transparent" BorderThickness="0"/>
+                             Background="Transparent" BorderThickness="0" TextChanged="TextBox_TextChanged"/>
                 </Grid>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="2">
@@ -72,17 +75,17 @@
                         </Style>
                     </StackPanel.Resources>
                     <TextBlock VerticalAlignment="Center" Margin="20">
-                        <Hyperlink >
+                        <Hyperlink Click="OpenBooks_Click" >
                             Книги
                         </Hyperlink>
                     </TextBlock>
                     <TextBlock VerticalAlignment="Center" Margin="20">
-                        <Hyperlink >
+                        <Hyperlink Click="OpenAuthors_Click">
                             Авторы
                         </Hyperlink>
                     </TextBlock>
                     <TextBlock VerticalAlignment="Center" Margin="20">
-                        <Hyperlink >
+                        <Hyperlink Click="OpenGenres_Click">
                             Жанры
                         </Hyperlink>
                     </TextBlock>
@@ -108,7 +111,7 @@
                                 <TextBlock Text="+" FontSize="80" Style="{StaticResource btnText}"/>
                             </Button>
                         </StackPanel>
-                        
+
                         <ListView ItemsSource="{Binding Authors}" HorizontalAlignment="Center">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -150,8 +153,8 @@
                 <Grid x:Name="AudioBookPanel" Grid.Row="1">
                     <StackPanel>
                         <TextBlock Text="Аудиокниги" Margin="30" Style="{StaticResource h1}"/>
-                        <ListView ItemsSource="{Binding Books}" HorizontalAlignment="Center">
-                            
+                        <ListView ItemsSource="{Binding SortBooks}" HorizontalAlignment="Center">
+
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal"/>
@@ -188,7 +191,7 @@
                                                                        Text="{Binding AudioBookPath, Converter={StaticResource audioDurationConverter}}"
                                                                        FontSize="20"/>
                                                         </StackPanel>
-                                                       
+
                                                     </Grid>
                                                 </Grid>
                                             </Button.Content>
@@ -281,7 +284,7 @@
                                 <TextBlock Text="+" FontSize="80" Style="{StaticResource btnText}"/>
                             </Button>
                         </StackPanel>
-                        <ListView ItemsSource="{Binding Books}" Margin="20" HorizontalAlignment="Center">
+                        <ListView ItemsSource="{Binding SortBooks}" Margin="20" HorizontalAlignment="Center">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal"/>
@@ -294,7 +297,7 @@
              CommandParameter="{Binding}" Command="{Binding DataContext.ChooseAnBookCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
              Background="Transparent" Padding="0">
                                             <Button.Content>
-                                                <Image Width="550" Height="850" Source="{Binding CoverImagePath}"/>
+                                                <Image Width="400" Height="700" Source="{Binding CoverImagePath}"/>
                                             </Button.Content>
                                         </Button>
                                     </Border>

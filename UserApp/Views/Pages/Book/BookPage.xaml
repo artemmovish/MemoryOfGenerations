@@ -15,9 +15,9 @@
         <vm:BookViewModel/>
     </d:Page.DataContext>
 
-    <Grid Height="1080">
+    <Grid>
         <Image Source="/Resources/Book/background.png" Stretch="Fill"/>
-        <Grid x:Name="UserPanel" Visibility="Collapsed">
+        <Grid x:Name="UserPanel" Visibility="Visible">
             <ScrollViewer>
                 <Grid>
                     <Image Source="{Binding SelectedBook.CoverImagePath}" VerticalAlignment="Top" HorizontalAlignment="Left"
@@ -40,18 +40,30 @@ Width="426" Height="667" Margin="50,80,0,0"/>
                         <TextBlock Text="{Binding SelectedBook.Description}" HorizontalAlignment="Left" Style="{StaticResource discription}" Width="1150" FontSize="40"/>
                     </StackPanel>
                     <StackPanel Width="426" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="58,788,0,0">
-                        <Button Height="90" Style="{StaticResource RoundedButtonStyle}">
+                        <Button Height="90" Style="{StaticResource RoundedButtonStyle}" Command="{Binding LoadAudioCommand}">
                             <Button.Content>
                                 <TextBlock Text="Слушать" Style="{StaticResource btnText}"/>
                             </Button.Content>
                         </Button>
-                        <Button Margin="0,20,0,0" Height="90" Style="{StaticResource RoundedButtonStyle}">
+                        <Button Margin="0,20,0,0" Height="90" Command="{Binding AddFavoriteCommand}" Style="{StaticResource RoundedButtonStyle}">
                             <Button.Content>
-                                <TextBlock Text="Читать" Style="{StaticResource btnText}"/>
+                                <TextBlock Text="Избранное" Style="{StaticResource btnText}"/>
                             </Button.Content>
                         </Button>
                     </StackPanel>
-                    <wv2:WebView2 Name="webView" Margin="0,0,0,0" Grid.Row="2" Width="1430" Height="1080"/>
+
+                    <StackPanel Margin="0,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Style="{StaticResource RoundButtonStyle}" Command="{Binding PreviousChapterCommand}" Background="Black" Canvas.Left="10" Canvas.Top="970">
+                            <Button.Content>
+                                <TextBlock Text="&lt;" Foreground="White" FontSize="36" FontWeight="Bold"/>
+                            </Button.Content>
+                        </Button>
+                        <wv2:WebView2 Name="webView" Margin="30,0,30,0" Grid.Row="2" Width="1430" Height="1080"/>
+                        <Button Style="{StaticResource RoundButtonStyle}" Command="{Binding NextChapterCommand}" Background="Black" Canvas.Left="1810" Canvas.Top="970" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <TextBlock Text="&gt;" Foreground="White" FontSize="36" FontWeight="Bold"/>
+                        </Button>
+                    </StackPanel>
+                    
                     <Grid Margin="0,2200,0,0" Height="1080">
                         <TextBlock Text="Мои заметки" Style="{StaticResource h1}" Margin="50"/>
 
@@ -63,11 +75,11 @@ Width="426" Height="667" Margin="50,80,0,0"/>
                                 <RectangleGeometry RadiusX="15" RadiusY="30" Rect="0,0,1550,270"/>
                             </Grid.Clip>
 
-                            <TextBox Text="fsdg" Margin="15" BorderThickness="0" Background="White" FontSize="36"
+                            <TextBox x:Name="BoxThoughts" KeyDown="BoxThoughts_KeyDown" Margin="15" BorderThickness="0" Background="White" FontSize="36"
                           Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Montserrat Alternates"/>
                         </Grid>
-                        <ListView ItemsSource="{Binding CurrentUser.MyThoughts}"
-   Margin="50,500,50,20" 
+                        <ListView ItemsSource="{Binding MyThoughts}"
+   Margin="50,500,50,0" 
    Background="Transparent">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -89,11 +101,11 @@ Width="426" Height="667" Margin="50,80,0,0"/>
                         RelativeSource={RelativeSource AncestorType=ListView}}">
                                             <Grid Background="White">
                                                 <TextBlock Text="{Binding Text}" 
-                            Margin="5" 
-                            Style="{StaticResource discription}"
-                            VerticalAlignment="Center" 
-                            HorizontalAlignment="Center"/>
+                                                           Style="{StaticResource discription}"
+                                                           VerticalAlignment="Center" 
+                                                           HorizontalAlignment="Center"/>
                                             </Grid>
+
                                         </Border>
                                     </Grid>
                                 </DataTemplate>
@@ -104,7 +116,7 @@ Width="426" Height="667" Margin="50,80,0,0"/>
             </ScrollViewer>
         </Grid>
 
-        <Grid x:Name="AdminPanel" Visibility="Visible">
+        <Grid x:Name="AdminPanel" Visibility="Collapsed">
             <Button Width="426" Height="667" Margin="50,80,0,0" Padding="0" Background="Transparent"
         VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding AddPhotoCommand}">
                 <Image Source="/Resources/Book/AuthorAddPhoto.png" Stretch="Fill"/>
@@ -139,7 +151,7 @@ Width="426" Height="667" Margin="50,80,0,0"/>
                 
                 <TextBlock Text="Описание:" Style="{StaticResource h1}" FontSize="40"/>
                 <TextBox Style="{StaticResource SearchBox}"  FontSize="40"
-Text="{Binding SelectedBook.Description}" Height="360" VerticalScrollBarVisibility="Auto"/>
+Text="{Binding SelectedBook.Description}" Height="360" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10" />
                 <ListView ItemsSource="{Binding Authors}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -177,22 +189,28 @@ Text="{Binding SelectedBook.Description}" Height="360" VerticalScrollBarVisibili
                 </ListView>
             </StackPanel>
             <StackPanel Width="426" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="58,788,0,0">
-                <Button Height="90" Style="{StaticResource RoundedButtonStyle}"
+                <Button Height="60" Style="{StaticResource RoundedButtonStyle}"
                         Command="{Binding AddAudioCommand}">
                     <Button.Content>
                         <TextBlock Text="Добавить Аудио" Style="{StaticResource btnText}"/>
                     </Button.Content>
                 </Button>
-                <Button Margin="0,10,0,0" Height="90" Style="{StaticResource RoundedButtonStyle}"
+                <Button Height="60" Margin="0,10,0,0" Style="{StaticResource RoundedButtonStyle}"
+        Command="{Binding AddBookCommand}">
+                    <Button.Content>
+                        <TextBlock Text="Добавить файл" Style="{StaticResource btnText}"/>
+                    </Button.Content>
+                </Button>
+                <Button Margin="0,10,0,0" Height="60" Style="{StaticResource RoundedButtonStyle}"
                         Command="{Binding DeleteBookCommand}">
                     <Button.Content>
                         <TextBlock Text="Удалить" Style="{StaticResource btnText}"/>
                     </Button.Content>
                 </Button>
-                <Button Margin="0,10,0,0" Height="90" Style="{StaticResource RoundedButtonStyle}"
+                <Button Margin="0,10,0,0" Height="60" Style="{StaticResource RoundedButtonStyle}"
                         Command="{Binding SaveBookCommand}">
                     <Button.Content>
-                        <TextBlock Text="Сохранить" Style="{StaticResource btnText}"/>
+                        <TextBlock FontSize="25" Text="Сохранить" Style="{StaticResource btnText}"/>
                     </Button.Content>
                 </Button>
             </StackPanel>

@@ -1,14 +1,268 @@
-﻿<Page x:Class="UserApp.Views.Pages.Music.MainMusicPage"
+﻿ <Page x:Class="UserApp.Views.Pages.Music.MainMusicPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:UserApp.Views.Pages.Music"
+      xmlns:vm="clr-namespace:UserApp.ViewModels.MusicVM"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainMusicPage">
+      d:DesignWidth="1920"
+      Title="MainMusicPage"
+       Loaded="Page_Loaded">
 
     <Grid>
-        
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <Grid Background="#292929">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0"/>
+                    <RowDefinition Height="1080"/>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Grid Grid.Row="1">
+                    <Image Source="/Resources/Music/shapkaMain.png"/>
+                    <Button Style="{StaticResource RoundedButtonStyle}" 
+                            Click="Button_Click" 
+                            Margin="160,829,1388,162">
+                        <TextBlock Text="Вернуться" Style="{StaticResource btnText}" Foreground="White"/>
+                    </Button>
+                </Grid>
+
+                <!-- Search Panel -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="/Resources/Music/search.png"/>
+
+                    <Grid Grid.Column="1" Height="90" Margin="30,0,100,0">
+                        <Rectangle RadiusX="30" RadiusY="30" Fill="#F3F3F3"/>
+                        <TextBox Text="{Binding SearchText}" Style="{StaticResource SearchBox}"
+                                 Margin="20"
+                                 Background="Transparent" BorderThickness="0"/>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="2">
+                        <TextBlock VerticalAlignment="Center" Margin="20">
+                            <Hyperlink Command="{Binding ShowMusicCommand}" Foreground="White">
+                                Песни
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="20">
+                            <Hyperlink Command="{Binding ShowActorsCommand}" Foreground="White">
+                                Исполнители
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="20">
+                            <Hyperlink Command="{Binding ShowGenresCommand}" Foreground="White">
+                                Жанры
+                            </Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Content -->
+                <Grid Grid.Row="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <!-- Actors Section -->
+                    <Grid x:Name="AuthorPanel" >
+                        <StackPanel Cursor="">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Исполнители" Margin="30" 
+                                       Style="{StaticResource h1}" Foreground="White"/>
+                                <Button Background="Black" FontSize="90" 
+                                        Style="{StaticResource RoundButtonStyle}"
+                                        Command="{Binding AddAnActorCommand}" 
+                                        x:Name="AddActorBtn">
+                                    <TextBlock Text="+" FontSize="80" Style="{StaticResource btnText}"/>
+                                </Button>
+                            </StackPanel>
+
+                            <ListView ItemsSource="{Binding Actors}" 
+                                      HorizontalAlignment="Center"
+                                      Background="Transparent">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="30" Margin="20" 
+                                                Style="{StaticResource RoundedBorderStyle}">
+                                            <Button Command="{Binding DataContext.ChooseAnActorCommand, 
+                                                    RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                    CommandParameter="{Binding}"
+                                                    Style="{StaticResource RoundedButtonStyle}"
+                                                    Background="Transparent">
+                                                <Grid Width="570" Height="470">
+                                                    <Image Source="/Resources/Book/background.png" 
+                                                           Width="590" Height="490" 
+                                                           Stretch="Fill"/>
+                                                    <Image Source="{Binding ImagePath}"
+                                                           Width="320" Height="400"
+                                                           VerticalAlignment="Bottom" 
+                                                           HorizontalAlignment="Right"/>
+                                                    <StackPanel Margin="15,30,0,0">
+                                                        <TextBlock Text="{Binding Name}" 
+                                                                   Style="{StaticResource title}"/>
+                                                        <TextBlock Text="{Binding Description}" 
+                                                                   Style="{StaticResource discription}"
+                                                                   Margin="0,30,0,0"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Button>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Music Section -->
+                    <Grid x:Name="AudioBookPanel" 
+                          Grid.Row="1">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Песни" Margin="30" 
+                                       Style="{StaticResource h1}" Foreground="White"/>
+                                <Button Background="Black" FontSize="90" 
+                                        Style="{StaticResource RoundButtonStyle}"
+                                        Command="{Binding AddAMusicCommand}" 
+                                        x:Name="AddMusicBtn">
+                                    <TextBlock Text="+" FontSize="80" Style="{StaticResource btnText}"/>
+                                </Button>
+                            </StackPanel>
+
+                            <ListView ItemsSource="{Binding FilteredMusics}" 
+                                      HorizontalAlignment="Center"
+                                      Background="Transparent">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="30" Margin="20" 
+                                                Style="{StaticResource RoundedBorderStyle}">
+                                            <Button Command="{Binding DataContext.ChooseAMusicCommand, 
+                                                    RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                    CommandParameter="{Binding}"
+                                                    Style="{StaticResource RoundedButtonStyle}"
+                                                    Background="Transparent">
+                                                <Grid Width="550" Height="350" Background="Black">
+                                                    <StackPanel>
+                                                        <Border Margin="10" Width="510" Height="200" 
+                                                                CornerRadius="15" 
+                                                                Style="{StaticResource RoundedBorderStyle}">
+                                                            <Image Source="{Binding ImagePath}" 
+                                                                   Stretch="UniformToFill"/>
+                                                        </Border>
+                                                        <TextBlock Text="{Binding Name}" 
+                                                                   Style="{StaticResource title}" 
+                                                                   Margin="10,0,0,0"/>
+                                                        <TextBlock Text="{Binding Actor.Name}" 
+                                                                   Style="{StaticResource discription}" 
+                                                                   Margin="10"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Button>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Genres Section -->
+                    <Grid x:Name="GenrePanel" 
+                          Grid.Row="2">
+                        <StackPanel>
+                            <TextBlock Text="Жанры" Margin="30" 
+                                   Style="{StaticResource h1}" Foreground="White"/>
+                            <ListView HorizontalAlignment="Center" Background="Transparent">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.Items>
+                                    <ListViewItem>
+                                        <ListViewItem.Content>
+                                            <Grid Width="400" Height="400" Margin="20,40,20,40" Background="Black">
+                                                <Grid.Effect>
+                                                    <DropShadowEffect BlurRadius="40"/>
+                                                </Grid.Effect>
+                                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <Image Source="/Resources/Music/rock.png"/>
+                                                    <TextBlock Foreground="White" TextAlignment="Center" Text="Рок" Style="{StaticResource title}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </ListViewItem.Content>
+                                    </ListViewItem>
+                                    <ListViewItem>
+                                        <ListViewItem.Content>
+                                            <Grid Width="400" Height="400" Margin="20,40,20,40" Background="Black">
+                                                <Grid.Effect>
+                                                    <DropShadowEffect BlurRadius="40"/>
+                                                </Grid.Effect>
+                                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <Image Source="/Resources/Music/narod.png"/>
+                                                    <TextBlock Foreground="White" TextAlignment="Center" Text="Народные" Style="{StaticResource title}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </ListViewItem.Content>
+                                    </ListViewItem>
+                                    <ListViewItem>
+                                        <ListViewItem.Content>
+                                            <Grid Width="400" Height="400" Margin="20,40,20,40" Background="Black">
+                                                <Grid.Effect>
+                                                    <DropShadowEffect BlurRadius="40"/>
+                                                </Grid.Effect>
+                                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <Image Source="/Resources/Music/pop.png"/>
+                                                    <TextBlock TextAlignment="Center" Text="Поп" Foreground="White" Style="{StaticResource title}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </ListViewItem.Content>
+                                    </ListViewItem>
+                                    <ListViewItem>
+                                        <ListViewItem.Content>
+                                            <Grid Width="400" Height="400" Margin="20,40,20,40" Background="Black">
+                                                <Grid.Effect>
+                                                    <DropShadowEffect BlurRadius="40"/>
+                                                </Grid.Effect>
+                                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <Image Source="/Resources/Music/Classic.png"/>
+                                                    <TextBlock TextAlignment="Center" Text="Классика" Foreground="White" Style="{StaticResource title}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </ListViewItem.Content>
+                                    </ListViewItem>
+                                    <!-- Other genre items -->
+                                </ListView.Items>
+                            </ListView>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+                <!-- Footer -->
+                <Grid Grid.Row="4" Width="1645" VerticalAlignment="Center">
+                    <TextBlock FontSize="32" Foreground="#787878"
+                               Text="Все права защищены. Адрес: ООО 'Память Поколений'"/>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

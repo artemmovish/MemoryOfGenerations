@@ -1,0 +1,85 @@
+﻿<Page x:Class="UserApp.Views.Pages.Book.ProfilePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UserApp.Views.Pages.Book"
+      mc:Ignorable="d" 
+      d:DesignWidth="1920"
+      Title="ProfilePage">
+
+    <ScrollViewer>
+        <Grid Background="White">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <Border Width="400" Height="400" Style="{StaticResource RoundedBorderStyle}" CornerRadius="400"
+                         Background="Transparent" VerticalAlignment="Top" Margin="80,75,0,0">
+                    <Image Width="400" Height="400" Source="{Binding User.AvatarPath}" Stretch="Fill"/>
+                </Border>
+                
+                <StackPanel Margin="100,80,0,0">
+                    <TextBlock Text="{Binding User.Username}" Style="{StaticResource h1}"/>
+                    <Button Width="650" Style="{StaticResource RoundedButtonStyle}"
+                            Command="{Binding ToUpdateProfileCommand}">
+                        <TextBlock Text="Редактировать профиль" Width="400" TextWrapping="Wrap"
+                               Style="{StaticResource btnText}" TextAlignment="Center"/>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
+            <ListView Margin="20,500,0,20" ItemsSource="{Binding User.FavoriteBooks}" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <ItemContainerTemplate>
+                        <Border CornerRadius="30" Margin="30,0,30,0" Style="{StaticResource RoundedBorderStyle}">
+                            <Button Style="{StaticResource RoundedButtonStyle}"
+CommandParameter="{Binding Book}" Command="{Binding DataContext.ChooseAnBookCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+Background="Transparent" Padding="0">
+                                <Button.Content>
+                                    <Image Width="350" Height="540" Source="{Binding Book.CoverImagePath}"/>
+                                </Button.Content>
+                            </Button>
+                        </Border>
+                    </ItemContainerTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ListView ItemsSource="{Binding User.MyThoughts}"
+Margin="50,1200,50,0" 
+Background="Transparent" VerticalAlignment="Top">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="240" Margin="0,0,0,10">
+                            <Grid.Effect>
+                                <DropShadowEffect BlurRadius="20"/>
+                            </Grid.Effect>
+                            <Border Margin="5" 
+              CornerRadius="15" 
+              Style="{StaticResource RoundedBorderStyle}" 
+              Width="{Binding ActualWidth, 
+                     Converter={StaticResource thirdOfWidthMinusMarginConverter},
+                     RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Grid Background="White">
+                                    <TextBlock Text="{Binding Text}" 
+                                                        Style="{StaticResource discription}"
+                                                        VerticalAlignment="Center" 
+                                                        HorizontalAlignment="Center"/>
+                                </Grid>
+
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ScrollViewer>
+</Page>

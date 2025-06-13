@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entity.Models.Music;
+﻿// User.cs
+using Entity.Models.MusicEntity;
+
 namespace Entity.Models
 {
     public class User
@@ -19,7 +15,6 @@ namespace Entity.Models
         public ICollection<FavoriteBook> FavoriteBooks { get; set; }
 
         // Navigation properties for music
-        public ICollection<Music.Music> FavoriteMusics { get; set; } = new List<Music.Music>();
-        
+        public ICollection<FavoriteMusic> FavoriteMusics { get; set; } = new List<FavoriteMusic>();
     }
 }

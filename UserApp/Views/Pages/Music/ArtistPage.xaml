@@ -4,11 +4,142 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:UserApp.Views.Pages.Music"
+      xmlns:vm="clr-namespace:UserApp.ViewModels.MusicVM"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="ArtistPage">
+      d:DesignWidth="1920"
+      Title="ArtistPage"
+      Loaded="Page_Loaded">
 
-    <Grid>
-        
+    <d:Page.DataContext>
+        <vm:ActorViewModel/>
+    </d:Page.DataContext>
+    <Grid Height="1080" Background="#292929">
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" x:Name="UserPanel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="1">
+                    <Image Source="{Binding ImagePath}" Margin="50,80,0,0"
+              VerticalAlignment="Top" HorizontalAlignment="Left" Width="426" Height="667" Stretch="Fill"/>
+                    <StackPanel Width="426" VerticalAlignment="Top" HorizontalAlignment="Left"
+                   Margin="50,800,0,0"/>
+                    <StackPanel Margin="532,80,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Имя:" Style="{StaticResource h1}"/>
+                            <Border Style="{StaticResource RoundedBorderStyle}" CornerRadius="30" Grid.Column="1">
+                                <TextBlock Style="{StaticResource discription}"  FontSize="80"
+                            Text="{Binding SelectedActor.Name}"/>
+                            </Border>
+                        </Grid>
+
+                        <TextBlock Text="Описание:" Style="{StaticResource h1}" FontSize="40"/>
+                        <TextBlock Style="{StaticResource discription}"  FontSize="40"
+Text="{Binding SelectedActor.Description}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <StackPanel>
+                        <TextBlock Text="Треки исполнителя:" Style="{StaticResource h1}"/>
+                        <ListView ItemsSource="{Binding SelectedActor.Musics}" Background="Transparent">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <ItemContainerTemplate>
+                                    <Button Background="Transparent" BorderThickness="0" Command="{Binding DataContext.ChooseAMusicCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                                        <Image Source="{Binding ImagePath}" Width="220" Height="335"/>
+                                    </Button>
+                                </ItemContainerTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+        <Grid x:Name="AdminPanel">
+            <Grid>
+                <Button Width="426" Height="667" Margin="50,80,0,0" Padding="0" Background="Transparent"
+                        VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding AddImageCommand}">
+                    <Image Source="/Resources/Book/AuthorAddPhoto.png" Stretch="Fill"/>
+                </Button>
+                <Image Source="{Binding ImagePath}" Margin="50,80,0,0"
+                       VerticalAlignment="Top" HorizontalAlignment="Left" Width="426" Height="667" Stretch="Fill"/>
+                <StackPanel Width="426" VerticalAlignment="Top" HorizontalAlignment="Left"
+                            Margin="50,800,0,0">
+                    <Button Style="{StaticResource RoundedButtonStyle}" Height="90"
+                            Command="{Binding DeleteActorCommand}">
+                        <Button.Content>
+                            <TextBlock Text="Удалить" Style="{StaticResource btnText}"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Style="{StaticResource RoundedButtonStyle}" Height="90" Margin="0,20,0,0" Command="{Binding SaveActorCommand}">
+                        <Button.Content>
+                            <TextBlock Text="Сохранить" Style="{StaticResource btnText}"/>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+                <StackPanel Margin="532,80,20,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Имя:" Style="{StaticResource h1}" Foreground="White"/>
+                        <Border Style="{StaticResource RoundedBorderStyle}" CornerRadius="30" Grid.Column="1">
+                            <TextBox Style="{StaticResource SearchBox}"  FontSize="80"
+                                     Text="{Binding SelectedActor.Name}"/>
+                        </Border>
+                    </Grid>
+                    <TextBlock Text="Описание:" Style="{StaticResource h1}" FontSize="40"
+                               Foreground="White"/>
+                    <TextBox Style="{StaticResource SearchBox}"  FontSize="40"
+         Text="{Binding SelectedActor.Description}" Height="386" VerticalScrollBarVisibility="Auto"/>
+                    <ListView ItemsSource="{Binding SelectedActor.Musics}" Background="Transparent">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <ItemContainerTemplate>
+                                <Border CornerRadius="30" Margin="20,0,20,0" Style="{StaticResource RoundedBorderStyle}">
+                                    <Button Style="{StaticResource RoundedButtonStyle}"
+CommandParameter="{Binding}" Command="{Binding DataContext.ChooseAMusicCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+Background="Transparent" Padding="0">
+                                        <Button.Content>
+                                            <Border Style="{StaticResource RoundedBorderStyle}" CornerRadius="30">
+                                                <Grid Width="550" Height="350" Background="Black">
+                                                    <StackPanel>
+                                                        <Border Margin="10" Width="510" Height="200" CornerRadius="15" Style="{StaticResource RoundedBorderStyle}">
+                                                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill"/>
+                                                        </Border>
+
+                                                        <TextBlock Text="{Binding Name}" Style="{StaticResource title}" Margin="10,0,0,0"/>
+                                                        <TextBlock Text="{Binding Actor.Name}" Style="{StaticResource discription}" Margin="10"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </Button.Content>
+                                    </Button>
+                                </Border>
+                            </ItemContainerTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

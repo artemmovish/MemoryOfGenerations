@@ -1,5 +1,6 @@
 ﻿using Entity.Models;
 using Entity.Models.Music;
+using Entity.Models.MusicEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Sqlite;
@@ -24,6 +25,8 @@ namespace Infastructure.Context
         public DbSet<Music> Musics { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<PlayList> PlayLists { get; set; }
+        public DbSet<FavoriteMusic> FavoriteMusics { get; set; }
+        public DbSet<MusicActor> MusicActors { get; set; } // Промежуточная сущность для связи многие-ко-многим
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,13 +73,8 @@ namespace Infastructure.Context
                 .HasIndex(fb => new { fb.UserId, fb.BookId })
                 .IsUnique();
 
-            // Новые связи для музыки
-            // Связь Actor-Music (один-ко-многим)
-            modelBuilder.Entity<Music>()
-                .HasOne(m => m.Actor)
-                .WithMany(a => a.Musics)
-                .HasForeignKey(m => m.ActorId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Связи для музыки
+            // Удалена связь Music -> Actor (заменена на многие-ко-многим через MusicActor)
 
             // Связь Music-PlayList (многие-ко-многим)
             modelBuilder.Entity<Music>()
@@ -88,15 +86,37 @@ namespace Infastructure.Context
                     j => j.HasOne<Music>().WithMany().HasForeignKey("MusicId"),
                     j => j.ToTable("MusicPlayList"));
 
-            // Связь User-Music (многие-ко-многим для избранных треков)
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.FavoriteMusics)
-                .WithMany()
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserFavoriteMusic",
-                    j => j.HasOne<Music>().WithMany().HasForeignKey("MusicId"),
-                    j => j.HasOne<User>().WithMany().HasForeignKey("UserId"),
-                    j => j.ToTable("UserFavoriteMusic"));
+            // Связь Music-Actor (многие-ко-многим через MusicActor)
+            modelBuilder.Entity<MusicActor>()
+                .HasKey(ma => new { ma.MusicId, ma.ActorId });
+
+            modelBuilder.Entity<MusicActor>()
+                .HasOne(ma => ma.Music)
+                .WithMany(m => m.MusicActors)
+                .HasForeignKey(ma => ma.MusicId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<MusicActor>()
+                .HasOne(ma => ma.Actor)
+                .WithMany(a => a.MusicActors)
+                .HasForeignKey(ma => ma.ActorId)
+             .OnDelete(DeleteBehavior.Cascade);
+  // Связи для FavoriteMusic
+            modelBuilder.Entity<FavoriteMusic>()
+                .HasOne(fm => fm.Music)
+                .WithMany(m => m.FavoriteMusics)
+                .HasForeignKey(fm => fm.MusicId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<FavoriteMusic>()
+                .HasOne(fm => fm.User)
+                .WithMany(u => u.FavoriteMusics)
+                .HasForeignKey(fm => fm.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<FavoriteMusic>()
+                .HasIndex(fm => new { fm.UserId, fm.MusicId })
+                .IsUnique();
         }
     }
 }

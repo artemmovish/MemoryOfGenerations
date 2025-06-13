@@ -130,7 +130,7 @@ namespace UserApp.ViewModels.BookVM
             }
         }
 
-        [RelayCommand]
+        [RelayCommand] 
         public async void SaveAuthor()
         {
             if(SelectedAuthor.Id == 0)

@@ -1,5 +1,7 @@
-﻿using Infastructure.Context;
+﻿using Entity.Models.MusicEntity;
+using Infastructure.Context;
 using Infastructure.Services;
+using Infastructure.Services.Music;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UserApp.ViewModels;
 using UserApp.ViewModels.Base;
+using UserApp.ViewModels.BookVM;
 using UserApp.Views.Pages.Book;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UserApp;
 
@@ -21,6 +25,7 @@ namespace UserApp;
 /// </summary>
 public partial class MainWindow : Window
 {
+    public int NumberShapka = 1;
     public MainWindow()
     {
         InitializeComponent();
@@ -34,13 +39,22 @@ public partial class MainWindow : Window
         MyThoughtService.Context = context;
         UserService.Context = context;
 
+        MusicService.Context = context;
+        ActorService.Context = context;
+        PlayListService.Context = context;
+
         MainFrame.Navigate(DataStore.Instance.StartBookPage);
         DataStore.NavigationService = MainFrame.NavigationService;
 
         DataContext = DataStore.MainViewModel;
 
+        DataStore.MainViewModel.SetShapka = ChangeShapka;
+
         DataStore.MainViewModel.OpenShapka = OpenShapka;
         DataStore.MainViewModel.CloseShapka = CloseShapka;
+
+        Shapka.Visibility = Visibility.Visible;
+        Shapka2.Visibility = Visibility.Collapsed;
     }
 
     private void Icon_Click(object sender, RoutedEventArgs e)
@@ -48,23 +62,65 @@ public partial class MainWindow : Window
         MainFrame.NavigationService.GoBack();
     }
 
-    public void OpenShapka()
+    public void ChangeShapka(int number)
     {
-        Shapka.Visibility = Visibility.Visible;
+        NumberShapka = number;
+
+        switch (number)
+        {
+            case 1:
+                Shapka.Visibility = Visibility.Visible;
+                Shapka2.Visibility = Visibility.Collapsed;
+                break;
+            case 2:
+                Shapka.Visibility = Visibility.Collapsed;
+                Shapka2.Visibility = Visibility.Visible;
+                break;
+            default:
+                break;
+        }
     }
 
+    public void OpenShapka()
+    {
+        switch (NumberShapka)
+        {
+            case 1:
+                Shapka.Visibility = Visibility.Visible;
+                Shapka2.Visibility = Visibility.Collapsed;
+                break;
+            case 2:
+                Shapka.Visibility = Visibility.Collapsed;
+                Shapka2.Visibility = Visibility.Visible;
+                break;
+            default:
+                break;
+        }
+    }
     public void CloseShapka()
     {
         Shapka.Visibility = Visibility.Collapsed;
+        Shapka2.Visibility = Visibility.Collapsed;
     }
     private void Window_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.F1)
         {
-            // Переключаем видимость шапки при нажатии F1
-            Shapka.Visibility = Shapka.Visibility == Visibility.Visible
+            switch (NumberShapka)
+            {
+                case 1:
+                    Shapka.Visibility = Shapka.Visibility == Visibility.Visible
                 ? Visibility.Collapsed
                 : Visibility.Visible;
+                    break;
+                case 2:
+                    Shapka2.Visibility = Shapka2.Visibility == Visibility.Visible
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (e.Key == Key.Escape)
@@ -80,5 +136,19 @@ public partial class MainWindow : Window
                 Application.Current.Shutdown(); // Закрыть приложение
             }
         }
+    }
+    private void About_Click(object sender, RoutedEventArgs e)
+    {
+        DataStore.NavigationService.Navigate(new AboutPage());
+    }
+    private void Help_Click(object sender, RoutedEventArgs e)
+    {
+        DataStore.NavigationService.Navigate(new HelpPage());
+    }
+    private void Profile_Click(object sender, RoutedEventArgs e)
+    {
+        var page = new ProfilePage();
+        page.DataContext = new ProfileViewModel();
+        DataStore.NavigationService.Navigate(page);
     }
 }

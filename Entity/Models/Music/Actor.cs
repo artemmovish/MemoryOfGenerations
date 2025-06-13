@@ -1,5 +1,7 @@
 ﻿// Actor.cs
-namespace Entity.Models.Music
+using Entity.Models.Music;
+
+namespace Entity.Models.MusicEntity
 {
     public class Actor
     {
@@ -10,5 +12,6 @@ namespace Entity.Models.Music
 
         // Navigation properties
         public ICollection<Music> Musics { get; set; } = new List<Music>();
+        public ICollection<MusicActor> MusicActors { get; set; } = new List<MusicActor>();
     }
 }

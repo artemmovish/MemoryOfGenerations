@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UserApp.ViewModels.Base;
+using UserApp.ViewModels.BookVM;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace UserApp.Views.Pages.Music
 {
@@ -24,5 +27,10 @@ namespace UserApp.Views.Pages.Music
         {
             InitializeComponent();
         }
+
+
+        
+
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Entity.Models;
+using Infastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,6 +52,8 @@ namespace UserApp.ViewModels.Base
         public static MainViewModel MainViewModel { get; set; } = new();
         public static NavigationService NavigationService { get; set; }
 
+        public static AudioService AudioService = new AudioService();
+
         #region Book
         public StartBookPage StartBookPage { get; set; } = new();
         public MainBookPage MainBookPage { get; set; } = new();
@@ -66,7 +69,7 @@ namespace UserApp.ViewModels.Base
         public MainMusicPage MainMusicPage { get; set; } = new();
         public MusicPage MusicPage { get; set; } = new();
 
-        
+        public ArtistPage ActorPage { get; set; } = new ArtistPage();
         #endregion
     }
 }

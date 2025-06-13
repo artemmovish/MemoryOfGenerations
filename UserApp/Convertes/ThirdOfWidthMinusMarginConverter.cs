@@ -14,7 +14,7 @@ namespace UserApp.Convertes
         {
             if (value is double width)
             {
-                return (width / 3) - 20; // 10 - суммарный margin (5 с каждой стороны)
+                return (width / 3.3) - 10; // 10 - суммарный margin (5 с каждой стороны)
             }
             return 0;
         }

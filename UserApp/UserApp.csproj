@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Book\about.png" />
     <None Remove="Resources\Book\AuthorAddPhoto.png" />
+    <None Remove="Resources\Book\background-reg.png" />
     <None Remove="Resources\Book\book10.png" />
     <None Remove="Resources\Book\book6.png" />
     <None Remove="Resources\Book\book7.png" />
@@ -21,16 +23,28 @@
     <None Remove="Resources\Book\Genre\horror.png" />
     <None Remove="Resources\Book\Genre\love.png" />
     <None Remove="Resources\Book\Genre\psih.png" />
+    <None Remove="Resources\Book\help.png" />
     <None Remove="Resources\Book\icon.png" />
+    <None Remove="Resources\Book\profileIcon.png" />
     <None Remove="Resources\Book\registrB.png" />
     <None Remove="Resources\Book\registrB2.png" />
     <None Remove="Resources\Book\search.png" />
     <None Remove="Resources\Fonts\ofont.ru_Montserrat.ttf" />
+    <None Remove="Resources\Music\backAuth.png" />
+    <None Remove="Resources\Music\backReg.png" />
+    <None Remove="Resources\Music\backStart.png" />
+    <None Remove="Resources\Music\Classic.png" />
+    <None Remove="Resources\Music\iconimage.png" />
+    <None Remove="Resources\Music\narod.png" />
+    <None Remove="Resources\Music\pop.png" />
+    <None Remove="Resources\Music\rock.png" />
+    <None Remove="Resources\Music\search.png" />
+    <None Remove="Resources\Music\shapkaMain.png" />
+    <None Remove="Resources\Music\Vector.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Resources\Music\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,7 +64,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Book\about.png" />
     <Resource Include="Resources\Book\AuthorAddPhoto.png" />
+    <Resource Include="Resources\Book\background-reg.png" />
     <Resource Include="Resources\Book\background.png" />
     <Resource Include="Resources\Book\book1.png" />
     <Resource Include="Resources\Book\book10.png" />
@@ -68,11 +84,24 @@
     <Resource Include="Resources\Book\Genre\horror.png" />
     <Resource Include="Resources\Book\Genre\love.png" />
     <Resource Include="Resources\Book\Genre\psih.png" />
+    <Resource Include="Resources\Book\help.png" />
     <Resource Include="Resources\Book\icon.png" />
+    <Resource Include="Resources\Book\profileIcon.png" />
     <Resource Include="Resources\Book\registrB.png" />
     <Resource Include="Resources\Book\registrB2.png" />
     <Resource Include="Resources\Book\search.png" />
     <Resource Include="Resources\Fonts\ofont.ru_Montserrat.ttf" />
+    <Resource Include="Resources\Music\backAuth.png" />
+    <Resource Include="Resources\Music\backReg.png" />
+    <Resource Include="Resources\Music\backStart.png" />
+    <Resource Include="Resources\Music\Classic.png" />
+    <Resource Include="Resources\Music\iconimage.png" />
+    <Resource Include="Resources\Music\narod.png" />
+    <Resource Include="Resources\Music\pop.png" />
+    <Resource Include="Resources\Music\rock.png" />
+    <Resource Include="Resources\Music\search.png" />
+    <Resource Include="Resources\Music\shapkaMain.png" />
+    <Resource Include="Resources\Music\Vector.png" />
   </ItemGroup>
 
 </Project>

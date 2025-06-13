@@ -26,6 +26,9 @@ namespace UserApp.Views.Pages.Music
         public AuthorizationPage()
         {
             InitializeComponent();
+
+            RegistrationPanel.Visibility = Visibility.Visible;
+            RegistrationPanel2.Visibility = Visibility.Collapsed;
         }
 
         private async void RegBtn_Click(object sender, RoutedEventArgs e)
@@ -42,7 +45,7 @@ namespace UserApp.Views.Pages.Music
             DataStore.MainViewModel.Message = "Вы зарегестрировались";
 
             DataStore.NavigationService.GoBack();
-            DataStore.NavigationService.Navigate(DataStore.Instance.MainBookPage);
+            DataStore.NavigationService.Navigate(DataStore.Instance.MainMusicPage);
         }
 
         private void HyperlinkToReg_Click(object sender, RoutedEventArgs e)
@@ -61,13 +64,16 @@ namespace UserApp.Views.Pages.Music
         {
             var user = await UserService.AuthenticateAsync(Username.Text, Password.Text);
 
-
             if (user != null)
             {
                 DataStore.Instance.User = user;
                 DataStore.MainViewModel.Message = "Вы вошли";
+
+                DataStore.AdminMode = user.Username == "admin";
+
                 DataStore.NavigationService.GoBack();
-                DataStore.NavigationService.Navigate(DataStore.Instance.MainBookPage);
+                DataStore.NavigationService.Navigate(DataStore.Instance.MainMusicPage);
+                return;
             }
 
             DataStore.MainViewModel.Message = "Неверный логин или пароль";

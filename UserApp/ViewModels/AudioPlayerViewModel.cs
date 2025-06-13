@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
+using UserApp.ViewModels.Base;
 
 namespace UserApp.ViewModels
 {
@@ -21,7 +22,7 @@ namespace UserApp.ViewModels
 
         public AudioPlayerViewModel()
         {
-            _audioService = new();
+            _audioService = DataStore.AudioService;
             _positionUpdateTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(200) // Обновление каждые 200 мс
@@ -33,10 +34,6 @@ namespace UserApp.ViewModels
 
             // Инициализация текущего трека
             UpdateCurrentTrackInfo();
-
-            AudioService.TrackList.Add(@"E:\MORGENSHTERN_-_POVOD_79042608.mp3");
-            AudioService.TrackList.Add(@"E:\Загрузки\Telegram Download\Маленький принц\Маленький принц.mp3");
-            _audioService.LoadAudio(@"E:\MORGENSHTERN_-_POVOD_79042608.mp3");
         }
 
         private void PositionUpdateTimer_Tick(object sender, EventArgs e)
@@ -66,6 +63,10 @@ namespace UserApp.ViewModels
 
             PlayPauseButtonContent = _audioService.IsPlaying ? "⏸" : "▶";
 
+            // Уведомляем об изменении CurrentPosition и TrackDuration
+            OnPropertyChanged(nameof(CurrentPosition));
+            OnPropertyChanged(nameof(TrackDuration));
+
             // Управляем таймером в зависимости от состояния воспроизведения
             if (_audioService.IsPlaying)
             {
@@ -80,17 +81,30 @@ namespace UserApp.ViewModels
         [RelayCommand]
         private void PlayPause()
         {
-            if (_audioService.IsPlaying)
+            
+
+            try
             {
-                _audioService.Pause();
-                _positionUpdateTimer.Stop();
+                if (_audioService.IsPlaying)
+                {
+                    _audioService.Pause();
+                    _positionUpdateTimer.Stop();
+                }
+                else
+                {
+                    OnPropertyChanged(nameof(CurrentPosition));
+                    OnPropertyChanged(nameof(TrackDuration));
+                    _audioService.Play();
+                    _positionUpdateTimer.Start();
+                }
+                PlayPauseButtonContent = _audioService.IsPlaying ? "⏸" : "▶";
             }
-            else
+            catch (Exception)
             {
-                _audioService.Play();
-                _positionUpdateTimer.Start();
+                _audioService.LoadAudio(AudioService.TrackList[0]);
+                PlayPause();
             }
-            PlayPauseButtonContent = _audioService.IsPlaying ? "⏸" : "▶";
+            
         }
 
         [RelayCommand(CanExecute = nameof(HasTracks))]

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UserApp.ViewModels.Base;
 
 namespace UserApp.Views.Pages.Music
 {
@@ -23,6 +24,12 @@ namespace UserApp.Views.Pages.Music
         public ArtistPage()
         {
             InitializeComponent();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            AdminPanel.Visibility = DataStore.AdminMode ? Visibility.Visible : Visibility.Collapsed;
+            UserPanel.Visibility = DataStore.AdminMode ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

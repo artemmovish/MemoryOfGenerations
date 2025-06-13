@@ -2,6 +2,8 @@
 using Infastructure.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,15 +35,22 @@ namespace UserApp.Views.Pages.Book
             var user = new User()
             {
                 Username = Username2.Text,
-                Password = Password2.Text
+                Password = Password2.Text,
+                MyThoughts = new ObservableCollection<MyThought>(),
+                FavoriteBooks = new ObservableCollection<FavoriteBook>(),
+                AvatarPath = "/Resources/Book/profileIcon.png"
             };
 
             await UserService.AddUserAsync(user);
            
-            DataStore.Instance.User = await UserService.AuthenticateAsync(user.Username,user.Password);
+            DataStore.Instance.User = await UserService.AuthenticateAsync(Username2.Text, Password2.Text);
+
             DataStore.MainViewModel.Message = "Вы зарегестрировались";
 
+            DataStore.MainViewModel.AvatarPath = user.AvatarPath;
+
             DataStore.NavigationService.GoBack();
+            await Task.Delay(100);
             DataStore.NavigationService.Navigate(DataStore.Instance.MainBookPage);
         }
 
@@ -64,10 +73,21 @@ namespace UserApp.Views.Pages.Book
 
             if (user != null)
             {
+                user.MyThoughts = await MyThoughtService.GetUserThoughtsAsync(user.Id);
+                user.FavoriteBooks = await FavoriteBookService.GetUserFavoritesAsync(user.Id);
                 DataStore.Instance.User = user;
+
+                DataStore.MainViewModel.AvatarPath = user.AvatarPath;
+
                 DataStore.MainViewModel.Message = "Вы вошли";
                 DataStore.NavigationService.GoBack();
+                await Task.Delay(500);
+
+                DataStore.AdminMode = user.Username == "admin";
+
                 DataStore.NavigationService.Navigate(DataStore.Instance.MainBookPage);
+
+                return;
             }
 
             DataStore.MainViewModel.Message = "Неверный логин или пароль";
