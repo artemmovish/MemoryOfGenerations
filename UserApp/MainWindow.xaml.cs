@@ -147,8 +147,14 @@ public partial class MainWindow : Window
     }
     private void Profile_Click(object sender, RoutedEventArgs e)
     {
+        if (DataStore.Instance.User == null)
+        {
+            MessageBox.Show("Вы не вошли в аккаунт");
+            return;
+        }
         var page = new ProfilePage();
         page.DataContext = new ProfileViewModel();
         DataStore.NavigationService.Navigate(page);
     }
 }
+
