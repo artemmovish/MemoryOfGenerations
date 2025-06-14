@@ -63,7 +63,7 @@
                 </ListView>
             </Grid>
         </Grid>
-        <Grid x:Name="AdminPanel" Visibility="Collapsed">
+        <Grid x:Name="AdminPanel" Visibility="Collapsed" Background="#292929">
             <Border Width="450" Height="450" CornerRadius="450" Style="{StaticResource RoundedBorderStyle}" 
             Margin="50,80,0,0" Padding="0" Background="Transparent"
             VerticalAlignment="Top" HorizontalAlignment="Left">
