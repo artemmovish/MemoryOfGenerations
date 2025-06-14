@@ -16,6 +16,7 @@ using UserApp.ViewModels;
 using UserApp.ViewModels.Base;
 using UserApp.ViewModels.BookVM;
 using UserApp.Views.Pages.Book;
+using UserApp.Views.Pages.Music;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UserApp;
@@ -42,6 +43,7 @@ public partial class MainWindow : Window
         MusicService.Context = context;
         ActorService.Context = context;
         PlayListService.Context = context;
+        FavoriteMusicService.Context = context;
 
         MainFrame.Navigate(DataStore.Instance.StartBookPage);
         DataStore.NavigationService = MainFrame.NavigationService;
@@ -139,11 +141,32 @@ public partial class MainWindow : Window
     }
     private void About_Click(object sender, RoutedEventArgs e)
     {
-        DataStore.NavigationService.Navigate(new AboutPage());
+        switch (NumberShapka)
+        {
+            case 1:
+                DataStore.NavigationService.Navigate(new AboutPage());
+                break;
+            case 2:
+                DataStore.NavigationService.Navigate(new AboutMusicPage());
+                break;
+            default:
+                break;
+        }
     }
     private void Help_Click(object sender, RoutedEventArgs e)
     {
-        DataStore.NavigationService.Navigate(new HelpPage());
+        switch (NumberShapka)
+        {
+            case 1:
+                DataStore.NavigationService.Navigate(new HelpPage());
+                break;
+            case 2:
+                DataStore.NavigationService.Navigate(new HelpMusicPage());
+                break;
+            default:
+                break;
+        }
+        
     }
     private void Profile_Click(object sender, RoutedEventArgs e)
     {
@@ -152,7 +175,15 @@ public partial class MainWindow : Window
             MessageBox.Show("Вы не вошли в аккаунт");
             return;
         }
+
         var page = new ProfilePage();
+
+        if (NumberShapka == 2)
+        {
+            page = new ProfilePage("#292929");
+        }
+
+        
         page.DataContext = new ProfileViewModel();
         DataStore.NavigationService.Navigate(page);
     }

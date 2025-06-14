@@ -198,8 +198,8 @@ namespace UserApp.ViewModels.MusicVM
         {
             var openFileDialog = new OpenFileDialog
             {
-                Title = "Выберите файл с текстом",
-                Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+                Title = "Выберите EPUB-файл с текстом",
+                Filter = "EPUB-файлы (*.epub)|*.epub|Все файлы (*.*)|*.*", // Изменили фильтр на EPUB
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 Multiselect = false
             };
@@ -207,7 +207,7 @@ namespace UserApp.ViewModels.MusicVM
             if (openFileDialog.ShowDialog() == true)
             {
                 SelectedMusic.TextPath = openFileDialog.FileName;
-                DataStore.MainViewModel.Message = "Текст загружен";
+                DataStore.MainViewModel.Message = "EPUB-файл загружен"; // Обновили сообщение
             }
         }
 

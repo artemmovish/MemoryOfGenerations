@@ -28,7 +28,7 @@
                     <TextBlock Text="Нет аккаутна?" Foreground="Black" Style="{StaticResource h2}"/>
                     <TextBlock>
             <Hyperlink Foreground="#AEA040" Click="HyperlinkToReg_Click">
-                Зарегистрироватся
+                Зарегистрироваться
             </Hyperlink>
                     </TextBlock>
                 </StackPanel>

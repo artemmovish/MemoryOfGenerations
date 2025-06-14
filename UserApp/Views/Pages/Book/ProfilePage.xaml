@@ -9,17 +9,17 @@
       Title="ProfilePage">
 
     <ScrollViewer>
-        <Grid Background="White">
+        <Grid x:Name="panel" Background="White">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                 <Border Width="400" Height="400" Style="{StaticResource RoundedBorderStyle}" CornerRadius="400"
-                         Background="Transparent" VerticalAlignment="Top" Margin="80,75,0,0">
-                    <Image Width="400" Height="400" Source="{Binding User.AvatarPath}" Stretch="Fill"/>
-                </Border>
-                
+                         Background="Transparent" VerticalAlignment="Top" Margin="80,75,0,0">                
+                    <Image Width="200" Height="200" Source="{Binding User.AvatarPath}" Stretch="Fill"/>        
+                </Border>                                                                                      
+   
                 <StackPanel Margin="100,80,0,0">
                     <TextBlock Text="{Binding User.Username}" Style="{StaticResource h1}"/>
                     <Button Width="650" Style="{StaticResource RoundedButtonStyle}"
-                            Command="{Binding ToUpdateProfileCommand}">
+                            Command="{Binding ToUpdateProfileCommand}" Click="Button_Click">
                         <TextBlock Text="Редактировать профиль" Width="400" TextWrapping="Wrap"
                                Style="{StaticResource btnText}" TextAlignment="Center"/>
                     </Button>

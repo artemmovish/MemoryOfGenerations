@@ -16,7 +16,7 @@
             <Button Style="{StaticResource RoundedButtonStyle}" Width="372" Height="89"
                      Canvas.Left="1318" Canvas.Top="763" Click="Start_Click">
                 <Button.Content>
-                    <TextBlock Text="Слшуать" Style="{StaticResource btnText}" Foreground="White"/>
+                    <TextBlock Text="Слушать" Style="{StaticResource btnText}" Foreground="White"/>
                 </Button.Content>
             </Button>
 

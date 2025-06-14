@@ -20,7 +20,7 @@
  VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" FontSize="40"
  HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                <Button Style="{StaticResource RoundedButtonStyle}" Background="Transparent"
+                <Button Style="{StaticResource RoundedButtonStyle}"
             Width="670" Height="100" Canvas.Left="625" Canvas.Top="707" Click="AuthBtn_Click">
                     <TextBlock Text="Войти" Style="{StaticResource btnText}"/>
                 </Button>
@@ -28,7 +28,7 @@
                     <TextBlock Text="Нет аккаутна? " Foreground="Black" Style="{StaticResource h2}"/>
                     <TextBlock>
             <Hyperlink Foreground="#AEA040" Click="HyperlinkToReg_Click">
-                Зарегистрироватся
+                Зарегистрироваться
             </Hyperlink>
                     </TextBlock>
                 </StackPanel>
@@ -47,7 +47,7 @@
 VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" FontSize="40"
 HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-                    <Button Style="{StaticResource RoundedButtonStyle}" Background="Transparent"
+                    <Button Style="{StaticResource RoundedButtonStyle}"
            Width="670" Height="100" Canvas.Left="625" Canvas.Top="707"
                             Click="RegBtn_Click">
                         <TextBlock Text="Зарегистрироваться" Style="{StaticResource btnText}" Foreground="White"/>

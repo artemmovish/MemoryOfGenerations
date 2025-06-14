@@ -84,7 +84,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Название:" Style="{StaticResource h1}"/>
+                    <TextBlock Text="Название:" Style="{StaticResource h1}" Foreground="White"/>
                     <Border Style="{StaticResource RoundedBorderStyle}" CornerRadius="30" Grid.Column="1">
                         <TextBox Style="{StaticResource SearchBox}" FontSize="80"
                          Text="{Binding CurrentPlayList.Name, Mode=TwoWay}"/>
@@ -118,8 +118,8 @@
                                                     <ColumnDefinition Width="199*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel>
-                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource title}" Margin="15,30,0,0"/>
-                                                    <TextBlock Text="{Binding Genre}" Style="{StaticResource discription}" Margin="15,30,0,0"/>
+                                                    <TextBlock Foreground="White" Text="{Binding Name}" Style="{StaticResource title}" Margin="15,30,0,0"/>
+                                                    <TextBlock Foreground="White" Text="{Binding Genre}" Style="{StaticResource discription}" Margin="15,30,0,0"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
@@ -157,8 +157,8 @@
                                                     <ColumnDefinition Width="199*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel>
-                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource title}" Margin="15,30,0,0"/>
-                                                    <TextBlock Text="{Binding Genre}" Style="{StaticResource discription}" Margin="15,30,0,0"/>
+                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource title}" Margin="15,30,0,0" Foreground="White"/>
+                                                    <TextBlock Text="{Binding Genre}" Style="{StaticResource discription}" Margin="15,30,0,0" Foreground="White"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>

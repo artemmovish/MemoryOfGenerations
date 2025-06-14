@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Entity.Models;
+using Entity.Models.MusicEntity;
 using Infastructure.Services;
 using Microsoft.Win32;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserApp.ViewModels.Base;
+using UserApp.ViewModels.MusicVM;
 using UserApp.Views.Pages.Book;
 
 namespace UserApp.ViewModels.BookVM
@@ -35,13 +37,21 @@ namespace UserApp.ViewModels.BookVM
         }
 
         [RelayCommand]
+        void ChooseAMusic(Music music)
+        {
+            var page = DataStore.Instance.MusicPage;
+            page.DataContext = music == null ? new MusicViewModel() : new MusicViewModel(music);
+            DataStore.NavigationService.Navigate(page);
+        }
+
+        [RelayCommand]
         void ToUpdateProfile()
         {
-            var page = new UpdateProfilePage();
+            //var page = new UpdateProfilePage();
 
-            page.DataContext = this;
+            //page.DataContext = this;
 
-            DataStore.NavigationService.Navigate(page);
+            //DataStore.NavigationService.Navigate(page);
         }
 
         [RelayCommand]

@@ -22,14 +22,14 @@
                     <Image Source="{Binding SelectedMusic.ImagePath}" VerticalAlignment="Top" HorizontalAlignment="Left"
                            Width="426" Height="667" Margin="50,80,0,0"/>
                     <StackPanel Margin="534,80,0,0">
-                        <TextBlock Text="{Binding SelectedMusic.Name}" Style="{StaticResource h1}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
-                            <TextBlock Text="Исполнитель: " Style="{StaticResource title}" FontSize="48"/>
-                            <TextBlock Text="{Binding SelectedMusic.Actor.Name}" Style="{StaticResource discription}" FontSize="48"/>
+                        <TextBlock Text="{Binding SelectedMusic.Name}" Style="{StaticResource h1}" Foreground="White"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,40,0,0" >
+                            <TextBlock Text="Исполнитель: " Foreground="White" Style="{StaticResource title}" FontSize="48"/>
+                            <TextBlock Text="{Binding SelectedMusic.Actor.Name}" Foreground="White" Style="{StaticResource discription}" FontSize="48"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
-                            <TextBlock Text="Жанр: " Style="{StaticResource title}" FontSize="48"/>
-                            <TextBlock Text="{Binding SelectedMusic.Genre}" Style="{StaticResource discription}" FontSize="48"/>
+                            <TextBlock Text="Жанр: " Style="{StaticResource title}" Foreground="White" FontSize="48"/>
+                            <TextBlock Text="{Binding SelectedMusic.Genre}" Foreground="White" Style="{StaticResource discription}" FontSize="48"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Width="426" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="58,788,0,0">

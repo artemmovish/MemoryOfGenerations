@@ -34,22 +34,22 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Имя:" Style="{StaticResource h1}"/>
+                            <TextBlock Text="Имя:" Style="{StaticResource h1}" Foreground="White"/>
                             <Border Style="{StaticResource RoundedBorderStyle}" CornerRadius="30" Grid.Column="1">
-                                <TextBlock Style="{StaticResource discription}"  FontSize="80"
+                                <TextBlock Style="{StaticResource discription}" Foreground="White" FontSize="80"
                             Text="{Binding SelectedActor.Name}"/>
                             </Border>
                         </Grid>
 
-                        <TextBlock Text="Описание:" Style="{StaticResource h1}" FontSize="40"/>
-                        <TextBlock Style="{StaticResource discription}"  FontSize="40"
+                        <TextBlock Text="Описание:" Style="{StaticResource h1}" Foreground="White" FontSize="40"/>
+                        <TextBlock Style="{StaticResource discription}" Foreground="White" FontSize="40"
 Text="{Binding SelectedActor.Description}"/>
                     </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="2">
                     <StackPanel>
-                        <TextBlock Text="Треки исполнителя:" Style="{StaticResource h1}"/>
+                        <TextBlock Text="Треки исполнителя:" Foreground="White" Style="{StaticResource h1}"/>
                         <ListView ItemsSource="{Binding SelectedActor.Musics}" Background="Transparent">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -68,7 +68,7 @@ Text="{Binding SelectedActor.Description}"/>
                 </Grid>
             </Grid>
         </ScrollViewer>
-        <Grid x:Name="AdminPanel">
+        <Grid x:Name="AdminPanel" Visibility="Collapsed">
             <Grid>
                 <Button Width="426" Height="667" Margin="50,80,0,0" Padding="0" Background="Transparent"
                         VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding AddImageCommand}">
